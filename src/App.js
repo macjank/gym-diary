@@ -13,7 +13,11 @@ function App() {
   return (
     <>
       <Navbar />
-      <Button onClick={onOpenNewTrainingForm} />
+      <Button
+        style={{ fontSize: "3rem" }}
+        onClick={onOpenNewTrainingForm}
+        content="+"
+      />
       {isTrainingFormOpen && <NewTrainingForm />}
       <Trainings />
     </>

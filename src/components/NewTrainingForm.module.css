@@ -1,0 +1,25 @@
+.form {
+  margin: 2rem;
+  padding: 1rem;
+  background-color: aquamarine;
+}
+
+.form__overall,
+.form__details {
+  margin: 0.2rem;
+  padding: 0.2rem;
+}
+
+.form__overall {
+  display: grid;
+}
+
+.form__overall > *,
+.form__details > * {
+  padding: 0.2rem;
+}
+
+.new-practice-btn {
+  background-color: cadetblue;
+  text-align: center;
+}
