@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import styles from '../../styles/Header/Nav.module.scss'
 
 const Nav = ({ onSelectLink }) => {
   return (
-    <ul>
+    <ul className={styles.nav}>
       <li>
         <Link onClick={onSelectLink} to="/">Home</Link>
       </li>

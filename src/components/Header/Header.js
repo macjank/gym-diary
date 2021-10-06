@@ -12,7 +12,7 @@ const Header = ({ isMenuOpen, onOpenMenu, onCloseMenu }) => {
 
   return (
     <header className={styles.header}>
-      <Link to="/">
+      <Link to="/" onClick={onCloseMenu}>
         <div>
           <h1>MyGymDiary</h1>
         </div>

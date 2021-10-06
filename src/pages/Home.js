@@ -8,7 +8,7 @@ const Home = () => {
     <main className={styles.home}>
       <TrainingsPreview />
       <Link to="/new-training">
-        <button>Add new training</button>
+        <button className={styles.btnNewTraining}>Add new training</button>
       </Link>
     </main>
   );

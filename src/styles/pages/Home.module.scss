@@ -1,5 +1,31 @@
+@import '../variables.scss';
+
 .home {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 80px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 80px;
+
+  a {
+    margin: auto;
+  }
+}
+
+.btnNewTraining {
+  width: 120px;
+  height: 70px;
+  margin: auto;
+  color: $grey0;
+  padding: 1rem;
+  background-color: $blue2;
+  box-shadow: 0px 0px 0px 2px #9fb4f2;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: $primaryFont;
+  font-size: 1rem;
+
+  &:hover {
+    background: linear-gradient(to bottom, $blue2 5%, $blue4 100%);
+  }
 }

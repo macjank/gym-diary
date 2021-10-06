@@ -2,6 +2,7 @@ import React from 'react';
 import Header from '../Header/Header';
 import { useState } from 'react/cjs/react.development';
 import Nav from '../Header/Nav';
+import styles from '../../styles/UI/Layout.module.scss';
 
 const Layout = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -20,7 +21,7 @@ const Layout = ({ children }) => {
   );
 
   return (
-    <div>
+    <div className={styles.layout}>
       <Header
         isMenuOpen={isMenuOpen}
         onOpenMenu={handleOpenMenu}

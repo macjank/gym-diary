@@ -1,0 +1,13 @@
+@import '../variables.scss';
+
+.nav {
+  background: $blue2;
+  padding: 1rem;
+  min-height: 100vh;
+
+  li {
+    text-align: center;
+    color: $grey1;
+    padding: 1rem;
+  }
+}
