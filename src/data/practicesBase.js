@@ -1,7 +1,7 @@
 const practicesBase = [
   {
     muscle_part: "nogi",
-    practices: ["przysiady ze sztangą", "uginanie kolan na maszynie"],
+    practices: ["przysiady ze sztangą", "uginanie nóg na maszynie"],
   },
   {
     muscle_part: "plecy",
@@ -25,6 +25,17 @@ const practicesBase = [
     muscle_part: "barki",
     practices: ["wycisnanie żołnierskie", "wznosy hantli bokiem"],
   },
+  {
+    muscle_part: "biceps",
+    practices: [
+      "uginanie przedramion z hantlami - podchwyt",
+      "uginanie przedramion ze sztangą - podchwyt",
+    ],
+  },
+  {
+    muscle_part: "triceps",
+    practices: ["kulki ta lepsza maszynka", "pompki na poręczach"],
+  },
 ];
 
-export default practicesBase
+export default practicesBase;
