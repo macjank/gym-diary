@@ -1,14 +1,15 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
-import { TrainingsContextProvider } from "./store/trainings-context";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import { BrowserRouter as Router } from 'react-router-dom';
+//import { TrainingsContextProvider } from "./store/trainings-context";
 
 ReactDOM.render(
-  <TrainingsContextProvider>
-    <React.StrictMode>
+  <React.StrictMode>
+    <Router>
       <App />
-    </React.StrictMode>
-  </TrainingsContextProvider>,
-  document.getElementById("root")
+    </Router>
+  </React.StrictMode>,
+  document.getElementById('root')
 );
