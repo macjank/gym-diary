@@ -1,24 +1,27 @@
 import React, { useContext } from 'react';
-import { useEffect } from 'react/cjs/react.development';
+import { useEffect, useState } from 'react/cjs/react.development';
 import TrainingFormContext from '../../store/trainingForm-context';
 import styles from '../../styles/TrainingForm/TrainingForm.module.scss';
 import ExerciseForm from './ExerciseForm';
 
 const TrainingForm = () => {
   const {
+    date,
+    location,
     exercises,
     onChangeDate,
     onChangeLocation,
     onAddBlankExerciseForm,
-    onStartNewForm,
+    onClearForm,
   } = useContext(TrainingFormContext);
 
-  //clearing the form after de-mounting the component
-  useEffect(() => {
-    //onStartNewForm();
+  const [selectedDate, setSelectedDate] = useState(date);
+  const [selectedLocation, setSelectedLocation] = useState(location);
 
-    return () => onStartNewForm();
-  }, [onStartNewForm]);
+  useEffect(() => {
+    setSelectedDate(date);
+    setSelectedLocation(location);
+  }, [date, location]);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -34,14 +37,6 @@ const TrainingForm = () => {
     onChangeLocation(location);
   };
 
-  // const handleChangeExerciseInfo = useCallback(
-  //   (id, musclePart, exerciseName) => {
-  //     //console.log(id, musclePart, exerciseName);
-  //     dispatch({ type: 'EDIT_EXERCISE', id, musclePart, exerciseName });
-  //   },
-  //   []
-  // );
-
   const handleAddExerciseForm = () => {
     onAddBlankExerciseForm();
   };
@@ -54,11 +49,18 @@ const TrainingForm = () => {
     <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.form__generalInfo}>
         <label htmlFor='date'>Date</label>
-        <input type='date' id='date' onChange={handleChangeDate} required />
+        <input
+          type='date'
+          id='date'
+          value={selectedDate}
+          onChange={handleChangeDate}
+          required
+        />
         <label htmlFor='location'>Location (gym)</label>
         <input
           type='text'
           id='location'
+          value={selectedLocation}
           onChange={handleChangeLocation}
           required
         />
@@ -68,6 +70,9 @@ const TrainingForm = () => {
 
       <button type='button' onClick={handleAddExerciseForm}>
         Add new exercise
+      </button>
+      <button type='button' onClick={onClearForm}>
+        Clear All
       </button>
       <button type='submit'>Submit form</button>
     </form>

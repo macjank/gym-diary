@@ -6,15 +6,26 @@ import TrainingFormContext from '../../store/trainingForm-context';
 import SetForm from './SetForm';
 
 const ExerciseForm = ({ id }) => {
+  const {
+    exercises,
+    onChangeExerciseInfo,
+    onRemoveExerciseForm,
+    onAddBlankSetForm,
+  } = useContext(TrainingFormContext);
+
   const { exerciseBase } = useContext(ExerciseBaseContext);
-  const { exercises, onChangeExerciseInfo, onAddBlankSetForm } =
-    useContext(TrainingFormContext);
 
   const sets = exercises.find(item => item.id === id).sets;
 
+  const currentExercise = exercises.find(exercise => exercise.id === id);
+
   //state for current inputs values
-  const [selectedMusclePart, setSelectedMusclePart] = useState('---');
-  const [selectedExercise, setSelectedExercise] = useState('---');
+  const [selectedMusclePart, setSelectedMusclePart] = useState(
+    currentExercise.musclePart !== '' ? currentExercise.musclePart : '---'
+  );
+  const [selectedExercise, setSelectedExercise] = useState(
+    currentExercise.exerciseName !== '' ? currentExercise.exerciseName : '---'
+  );
 
   //these variables are here to dynamically change options in the input fields
   const possibleMuscleParts = exerciseBase.map(item => item.musclePart);
@@ -36,8 +47,20 @@ const ExerciseForm = ({ id }) => {
     onChangeExerciseInfo(id, selectedMusclePart, selectedExercise);
   }, [id, onChangeExerciseInfo, selectedMusclePart, selectedExercise]);
 
+  const handleChangeMusclePart = e => {
+    setSelectedMusclePart(e.target.value);
+  };
+
+  const handleChangeExercise = e => {
+    setSelectedExercise(e.target.value);
+  };
+
   const handleAddNewSetForm = () => {
     onAddBlankSetForm(id);
+  };
+
+  const handleRemoveExercise = () => {
+    onRemoveExerciseForm(id);
   };
 
   const setsForms = sets.map((set, index) => (
@@ -51,8 +74,8 @@ const ExerciseForm = ({ id }) => {
         <select
           name='muscle'
           id='muscle'
-          defaultValue='---'
-          onChange={e => setSelectedMusclePart(e.target.value)}
+          value={selectedMusclePart}
+          onChange={handleChangeMusclePart}
         >
           <option value='---' disabled>
             ---
@@ -67,8 +90,8 @@ const ExerciseForm = ({ id }) => {
         <select
           name='exerciseName'
           id='exerciseName'
-          defaultValue='---'
-          onChange={e => setSelectedExercise(e.target.value)}
+          value={selectedExercise}
+          onChange={handleChangeExercise}
         >
           <option value='---' disabled>
             ---
@@ -85,6 +108,9 @@ const ExerciseForm = ({ id }) => {
 
       <button type='button' onClick={handleAddNewSetForm}>
         Add set
+      </button>
+      <button type='button' onClick={handleRemoveExercise}>
+        Remove exercise
       </button>
     </>
   );
