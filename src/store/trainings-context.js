@@ -19,7 +19,7 @@ export const TrainingsContextProvider = ({ children }) => {
       }
 
       const data = await response.json();
-      console.log(data);
+
       const loadedTrainings = [];
 
       for (const key in data) {

@@ -19,7 +19,7 @@ export const ExerciseBaseContextProvider = ({ children }) => {
       }
 
       const data = await response.json();
-      console.log(data);
+      setExerciseBase(data);
     } catch (error) {
       console.log(error);
     }
@@ -39,3 +39,5 @@ export const ExerciseBaseContextProvider = ({ children }) => {
     </ExerciseBaseContext.Provider>
   );
 };
+
+export default ExerciseBaseContext;

@@ -9,21 +9,24 @@ import { ExerciseBaseContextProvider } from './store/exerciseBase-context';
 //import TrainingsContext from './store/trainings-context';
 
 import './styles/global.scss';
+import { TrainingFormContextProvider } from './store/trainingForm-context';
 
 function App() {
   return (
     <TrainingsContextProvider>
       <ExerciseBaseContextProvider>
-        <Layout>
-          <Switch>
-            <Route path='/' exact>
-              <Home />
-            </Route>
-            <Route path='/new-training'>
-              <NewTraining />
-            </Route>
-          </Switch>
-        </Layout>
+        <TrainingFormContextProvider>
+          <Layout>
+            <Switch>
+              <Route path='/' exact>
+                <Home />
+              </Route>
+              <Route path='/new-training'>
+                <NewTraining />
+              </Route>
+            </Switch>
+          </Layout>
+        </TrainingFormContextProvider>
       </ExerciseBaseContextProvider>
     </TrainingsContextProvider>
   );
