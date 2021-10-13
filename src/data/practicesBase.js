@@ -1,10 +1,10 @@
 const practicesBase = [
   {
-    muscle_part: "nogi",
+    muscle_part: "legs",
     practices: ["przysiady ze sztangą", "uginanie nóg na maszynie"],
   },
   {
-    muscle_part: "plecy",
+    muscle_part: "back",
     practices: [
       "przyciąganie uchwytu siedząc - nachwyt",
       "przyciąganie uchwytu siedząc - podchwyt",

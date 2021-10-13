@@ -4,7 +4,7 @@ const TrainingsContext = React.createContext({
   trainings: [],
 });
 
-export const TrainingsContextProvider = props => {
+export const TrainingsContextProvider = ({ children }) => {
   const [trainings, setTrainings] = useState([]);
 
   const url =
@@ -45,7 +45,7 @@ export const TrainingsContextProvider = props => {
 
   return (
     <TrainingsContext.Provider value={contextValue}>
-      {props.children}
+      {children}
     </TrainingsContext.Provider>
   );
 };
