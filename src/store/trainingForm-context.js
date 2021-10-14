@@ -2,12 +2,23 @@ import React from 'react';
 import { useReducer, useCallback } from 'react/cjs/react.development';
 import { useImmerReducer } from 'use-immer';
 
+const URL =
+  'https://gym-diary-7ff93-default-rtdb.firebaseio.com/trainings.json';
+
 const TrainingFormContext = React.createContext({
+  date: '',
+  location: '',
   exercises: [],
+  onClearForm: () => {},
   onChangeDate: () => {},
   onChangeLocation: () => {},
   onAddBlankExerciseForm: () => {},
   onChangeExerciseInfo: () => {},
+  onRemoveExerciseForm: () => {},
+  onAddBlankSetForm: () => {},
+  onChangeSetInfo: () => {},
+  onRemoveSetForm: () => {},
+  onSubmitForm: () => {},
 });
 
 const initialTrainingState = {
@@ -36,6 +47,10 @@ const trainingStateReducer = (draft, action) => {
     const editedExercise = draft.exercises.find(item => item.id === action.id);
     editedExercise.musclePart = action.musclePart;
     editedExercise.exerciseName = action.exerciseName;
+  } else if (action.type === 'REMOVE_EXERCISE') {
+    draft.exercises = draft.exercises.filter(
+      exercise => exercise.id !== action.id
+    );
   } else if (action.type === 'ADD_BLANK_SET') {
     const exerciseId = action.exerciseId;
     const editedExercise = draft.exercises.find(
@@ -43,8 +58,8 @@ const trainingStateReducer = (draft, action) => {
     );
 
     const blankSet = {
-      weight: null,
-      reps: null,
+      weight: undefined,
+      reps: undefined,
     };
 
     editedExercise.sets.push(blankSet);
@@ -57,6 +72,16 @@ const trainingStateReducer = (draft, action) => {
 
     editedSet.weight = action.weight;
     editedSet.reps = action.reps;
+  } else if (action.type === 'REMOVE_SET') {
+    console.log(`removing set: ${action.parentId} ${action.id}`);
+    const { parentId, id } = action;
+    const editedExercise = draft.exercises.find(
+      exercise => exercise.id === parentId
+    );
+
+    editedExercise.sets = editedExercise.sets.filter(
+      (set, index) => index !== id
+    );
   }
 };
 
@@ -66,10 +91,17 @@ export const TrainingFormContextProvider = props => {
     initialTrainingState
   );
 
-  // const [trainingState, dispatch] = useReducer(
-  //   trainingStateReducer,
-  //   initialTrainingState
-  // );
+  const sendTraining = async data => {
+    const response = await fetch(URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    console.log(response);
+  };
 
   const clearForm = useCallback(() => {
     dispatch({ type: 'CLEAR_FORM' });
@@ -88,28 +120,51 @@ export const TrainingFormContextProvider = props => {
     dispatch({ type: 'ADD_BLANK_EXERCISE', id });
   };
 
-  const addBlankSetForm = exerciseId => {
-    dispatch({ type: 'ADD_BLANK_SET', exerciseId });
-  };
-
   const changeExerciseInfo = useCallback((id, musclePart, exerciseName) => {
     dispatch({ type: 'EDIT_EXERCISE', id, musclePart, exerciseName });
   }, []);
+
+  const removeExerciseForm = id => {
+    dispatch({ type: 'REMOVE_EXERCISE', id });
+  };
+
+  const addBlankSetForm = exerciseId => {
+    dispatch({ type: 'ADD_BLANK_SET', exerciseId });
+  };
 
   const changeSetInfo = ({ parentId, id, weight, reps }) => {
     console.log(parentId, id, weight, reps);
     dispatch({ type: 'EDIT_SET', parentId, id, weight, reps });
   };
 
+  const removeSetForm = ({ parentId, id }) => {
+    dispatch({ type: 'REMOVE_SET', parentId, id });
+  };
+
+  const submitForm = () => {
+    const data = {
+      date: trainingState.date,
+      location: trainingState.location,
+      exercises: trainingState.exercises,
+    };
+
+    sendTraining(data);
+  };
+
   const contextValue = {
+    date: trainingState.date,
+    location: trainingState.location,
     exercises: trainingState.exercises,
     onChangeDate: changeDate,
     onChangeLocation: changeLocation,
     onAddBlankExerciseForm: addBlankExerciseForm,
     onChangeExerciseInfo: changeExerciseInfo,
-    onStartNewForm: clearForm,
+    onRemoveExerciseForm: removeExerciseForm,
+    onClearForm: clearForm,
     onAddBlankSetForm: addBlankSetForm,
     onChangeSetInfo: changeSetInfo,
+    onRemoveSetForm: removeSetForm,
+    onSubmitForm: submitForm,
   };
 
   return (

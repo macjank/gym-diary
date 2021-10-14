@@ -27,9 +27,12 @@ export const TrainingsContextProvider = ({ children }) => {
           id: key,
           date: data[key].date,
           location: data[key].location,
+          exercises: data[key].exercises,
         };
         loadedTrainings.push(singleTraining);
       }
+
+      console.log(loadedTrainings);
 
       setTrainings(loadedTrainings);
     } catch (error) {
