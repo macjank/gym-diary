@@ -4,6 +4,7 @@ import { useEffect } from 'react/cjs/react.development';
 import ExerciseBaseContext from '../../store/exerciseBase-context';
 import TrainingFormContext from '../../store/trainingForm-context';
 import SetForm from './SetForm';
+import styles from '../../styles/TrainingForm/ExerciseForm.module.scss';
 
 const ExerciseForm = ({ id }) => {
   const {
@@ -68,7 +69,7 @@ const ExerciseForm = ({ id }) => {
   ));
 
   return (
-    <>
+    <div className={styles.exerciseForm}>
       <div>
         <label htmlFor='muscle'>Muscle part:</label>
         <select
@@ -76,6 +77,7 @@ const ExerciseForm = ({ id }) => {
           id='muscle'
           value={selectedMusclePart}
           onChange={handleChangeMusclePart}
+          required
         >
           <option value='---' disabled>
             ---
@@ -92,6 +94,7 @@ const ExerciseForm = ({ id }) => {
           id='exerciseName'
           value={selectedExercise}
           onChange={handleChangeExercise}
+          required
         >
           <option value='---' disabled>
             ---
@@ -112,7 +115,7 @@ const ExerciseForm = ({ id }) => {
       <button type='button' onClick={handleRemoveExercise}>
         Remove exercise
       </button>
-    </>
+    </div>
   );
 };
 

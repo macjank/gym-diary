@@ -2,12 +2,23 @@ import React from 'react';
 import { useReducer, useCallback } from 'react/cjs/react.development';
 import { useImmerReducer } from 'use-immer';
 
+const URL =
+  'https://gym-diary-7ff93-default-rtdb.firebaseio.com/trainings.json';
+
 const TrainingFormContext = React.createContext({
+  date: '',
+  location: '',
   exercises: [],
+  onClearForm: () => {},
   onChangeDate: () => {},
   onChangeLocation: () => {},
   onAddBlankExerciseForm: () => {},
   onChangeExerciseInfo: () => {},
+  onRemoveExerciseForm: () => {},
+  onAddBlankSetForm: () => {},
+  onChangeSetInfo: () => {},
+  onRemoveSetForm: () => {},
+  onSubmitForm: () => {},
 });
 
 const initialTrainingState = {
@@ -80,10 +91,17 @@ export const TrainingFormContextProvider = props => {
     initialTrainingState
   );
 
-  // const [trainingState, dispatch] = useReducer(
-  //   trainingStateReducer,
-  //   initialTrainingState
-  // );
+  const sendTraining = async data => {
+    const response = await fetch(URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    console.log(response);
+  };
 
   const clearForm = useCallback(() => {
     dispatch({ type: 'CLEAR_FORM' });
@@ -123,6 +141,16 @@ export const TrainingFormContextProvider = props => {
     dispatch({ type: 'REMOVE_SET', parentId, id });
   };
 
+  const submitForm = () => {
+    const data = {
+      date: trainingState.date,
+      location: trainingState.location,
+      exercises: trainingState.exercises,
+    };
+
+    sendTraining(data);
+  };
+
   const contextValue = {
     date: trainingState.date,
     location: trainingState.location,
@@ -136,6 +164,7 @@ export const TrainingFormContextProvider = props => {
     onAddBlankSetForm: addBlankSetForm,
     onChangeSetInfo: changeSetInfo,
     onRemoveSetForm: removeSetForm,
+    onSubmitForm: submitForm,
   };
 
   return (
