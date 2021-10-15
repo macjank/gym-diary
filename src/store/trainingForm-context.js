@@ -1,6 +1,7 @@
 import React from 'react';
-import { useReducer, useCallback } from 'react/cjs/react.development';
+import { useReducer, useCallback, useState } from 'react/cjs/react.development';
 import { useImmerReducer } from 'use-immer';
+import checkFormValidity from '../helpers/checkFormValidity';
 
 const URL =
   'https://gym-diary-7ff93-default-rtdb.firebaseio.com/trainings.json';
@@ -19,6 +20,7 @@ const TrainingFormContext = React.createContext({
   onChangeSetInfo: () => {},
   onRemoveSetForm: () => {},
   onSubmitForm: () => {},
+  isSubmiting: false,
 });
 
 const initialTrainingState = {
@@ -91,6 +93,8 @@ export const TrainingFormContextProvider = props => {
     initialTrainingState
   );
 
+  const [isSubmiting, setIsSubmiting] = useState(false);
+
   const sendTraining = async data => {
     const response = await fetch(URL, {
       method: 'POST',
@@ -99,7 +103,6 @@ export const TrainingFormContextProvider = props => {
       },
       body: JSON.stringify(data),
     });
-
     console.log(response);
   };
 
@@ -148,6 +151,16 @@ export const TrainingFormContextProvider = props => {
       exercises: trainingState.exercises,
     };
 
+    //checking validity
+    const isFormValid = checkFormValidity(data);
+
+    console.log(isFormValid);
+
+    if (!isFormValid) {
+      setIsSubmiting(true);
+      return;
+    }
+
     sendTraining(data);
   };
 
@@ -165,6 +178,7 @@ export const TrainingFormContextProvider = props => {
     onChangeSetInfo: changeSetInfo,
     onRemoveSetForm: removeSetForm,
     onSubmitForm: submitForm,
+    isSubmiting,
   };
 
   return (
