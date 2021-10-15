@@ -12,6 +12,7 @@ const ExerciseForm = ({ id }) => {
     onChangeExerciseInfo,
     onRemoveExerciseForm,
     onAddBlankSetForm,
+    isSubmiting,
   } = useContext(TrainingFormContext);
 
   const { exerciseBase } = useContext(ExerciseBaseContext);
@@ -27,6 +28,12 @@ const ExerciseForm = ({ id }) => {
   const [selectedExercise, setSelectedExercise] = useState(
     currentExercise.exerciseName !== '' ? currentExercise.exerciseName : '---'
   );
+
+  const [isMuscleTouched, setIsMuscleTouched] = useState(false);
+  const [isExerciseTouched, setIsExerciseTouched] = useState(false);
+
+  const isMuscleNOK = selectedMusclePart === '---' && isMuscleTouched;
+  const isExerciseNOK = selectedExercise === '---' && isExerciseTouched;
 
   //these variables are here to dynamically change options in the input fields
   const possibleMuscleParts = exerciseBase.map(item => item.musclePart);
@@ -48,6 +55,13 @@ const ExerciseForm = ({ id }) => {
     onChangeExerciseInfo(id, selectedMusclePart, selectedExercise);
   }, [id, onChangeExerciseInfo, selectedMusclePart, selectedExercise]);
 
+  useEffect(() => {
+    if (isSubmiting) {
+      setIsMuscleTouched(true);
+      setIsExerciseTouched(true);
+    }
+  }, [isSubmiting]);
+
   const handleChangeMusclePart = e => {
     setSelectedMusclePart(e.target.value);
   };
@@ -68,43 +82,51 @@ const ExerciseForm = ({ id }) => {
     <SetForm key={index} parentId={id} id={index} />
   ));
 
+  const muscleClasses = isMuscleNOK ? `${styles.error}` : '';
+
+  const exerciseClasses = isExerciseNOK ? `${styles.error}` : '';
+
   return (
     <div className={styles.exerciseForm}>
       <div>
-        <label htmlFor='muscle'>Muscle part:</label>
-        <select
-          name='muscle'
-          id='muscle'
-          value={selectedMusclePart}
-          onChange={handleChangeMusclePart}
-          required
-        >
-          <option value='---' disabled>
-            ---
-          </option>
-          {possibleMuscleParts.map((musclePart, index) => (
-            <option key={index} value={musclePart}>
-              {musclePart}
+        <div className={muscleClasses}>
+          <label htmlFor='muscle'>Muscle part:</label>
+          <select
+            name='muscle'
+            id='muscle'
+            value={selectedMusclePart}
+            onChange={handleChangeMusclePart}
+            required
+          >
+            <option value='---' disabled>
+              ---
             </option>
-          ))}
-        </select>
-        <label htmlFor='exerciseName'>Exercise name:</label>
-        <select
-          name='exerciseName'
-          id='exerciseName'
-          value={selectedExercise}
-          onChange={handleChangeExercise}
-          required
-        >
-          <option value='---' disabled>
-            ---
-          </option>
-          {possibleExercises.map((exercise, index) => (
-            <option key={index} value={exercise}>
-              {exercise}
+            {possibleMuscleParts.map((musclePart, index) => (
+              <option key={index} value={musclePart}>
+                {musclePart}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className={exerciseClasses}>
+          <label htmlFor='exerciseName'>Exercise name:</label>
+          <select
+            name='exerciseName'
+            id='exerciseName'
+            value={selectedExercise}
+            onChange={handleChangeExercise}
+            required
+          >
+            <option value='---' disabled>
+              ---
             </option>
-          ))}
-        </select>
+            {possibleExercises.map((exercise, index) => (
+              <option key={index} value={exercise}>
+                {exercise}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       {setsForms}

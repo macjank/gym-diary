@@ -46,9 +46,9 @@
   }
 }
 
-.input--error {
+.error {
   input {
-
-    border: 3px solid red;
+    background-color: salmon;
+    //border: 3px solid red;
   }
 }

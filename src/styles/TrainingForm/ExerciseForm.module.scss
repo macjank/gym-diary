@@ -1,4 +1,10 @@
 .exerciseForm {
-    background-color: aqua;
-    margin: 1rem;
+  background-color: aqua;
+  margin: 1rem;
+}
+
+.error {
+  select {
+    background-color: salmon;
+  }
 }
