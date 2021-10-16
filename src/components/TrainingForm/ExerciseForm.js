@@ -1,21 +1,18 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react/cjs/react.development';
-import ExerciseBaseContext from '../../store/exerciseBase-context';
-import TrainingFormContext from '../../store/trainingForm-context';
 import SetForm from './SetForm';
 import styles from '../../styles/TrainingForm/ExerciseForm.module.scss';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { trainingFormActions } from '../../store/trainingForm-slice';
 
 const ExerciseForm = ({ id }) => {
-  const {
-    exercises,
-    onChangeExerciseInfo,
-    onRemoveExerciseForm,
-    onAddBlankSetForm,
-    isSubmiting,
-  } = useContext(TrainingFormContext);
-
-  const { exerciseBase } = useContext(ExerciseBaseContext);
+  const { exercises, isValidationError } = useSelector(
+    state => state.trainingForm
+  );
+  const exerciseBase = useSelector(state => state.exercisesBase.exercises);
+  const dispatch = useDispatch();
 
   const sets = exercises.find(item => item.id === id).sets;
 
@@ -52,15 +49,22 @@ const ExerciseForm = ({ id }) => {
     if (selectedMusclePart === '---' || selectedExercise === '---') {
       return;
     }
-    onChangeExerciseInfo(id, selectedMusclePart, selectedExercise);
-  }, [id, onChangeExerciseInfo, selectedMusclePart, selectedExercise]);
+
+    dispatch(
+      trainingFormActions.editExercise({
+        id,
+        musclePart: selectedMusclePart,
+        exerciseName: selectedExercise,
+      })
+    );
+  }, [id, selectedMusclePart, selectedExercise]);
 
   useEffect(() => {
-    if (isSubmiting) {
+    if (isValidationError) {
       setIsMuscleTouched(true);
       setIsExerciseTouched(true);
     }
-  }, [isSubmiting]);
+  }, [isValidationError]);
 
   const handleChangeMusclePart = e => {
     setSelectedMusclePart(e.target.value);
@@ -71,11 +75,13 @@ const ExerciseForm = ({ id }) => {
   };
 
   const handleAddNewSetForm = () => {
-    onAddBlankSetForm(id);
+    //onAddBlankSetForm(id);
+    dispatch(trainingFormActions.addBlankSetForm(id));
   };
 
   const handleRemoveExercise = () => {
-    onRemoveExerciseForm(id);
+    //onRemoveExerciseForm(id);
+    dispatch(trainingFormActions.removeExercise(id));
   };
 
   const setsForms = sets.map((set, index) => (

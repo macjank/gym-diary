@@ -1,21 +1,20 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react/cjs/react.development';
-import TrainingFormContext from '../../store/trainingForm-context';
 import styles from '../../styles/TrainingForm/TrainingForm.module.scss';
 import ExerciseForm from './ExerciseForm';
+import { trainingFormActions } from '../../store/trainingForm-slice';
+import { sendNewTraining } from '../../store/trainingForm-actions';
+import checkFormValidity from '../../helpers/checkFormValidity';
+import { useHistory } from 'react-router';
 
 const TrainingForm = () => {
-  const {
-    date,
-    location,
-    exercises,
-    onChangeDate,
-    onChangeLocation,
-    onAddBlankExerciseForm,
-    onClearForm,
-    onSubmitForm,
-    isSubmiting,
-  } = useContext(TrainingFormContext);
+  const history = useHistory();
+  const { date, location, exercises, isValidationError } = useSelector(
+    state => state.trainingForm
+  );
+  const dispatch = useDispatch();
 
   //local state managing inputs
   const [selectedDate, setSelectedDate] = useState(date);
@@ -31,23 +30,37 @@ const TrainingForm = () => {
 
   //updating the context every time inputs are changed
   useEffect(() => {
-    onChangeDate(selectedDate);
-    onChangeLocation(selectedLocation);
+    dispatch(trainingFormActions.changeDate(selectedDate));
+    dispatch(trainingFormActions.changeLocation(selectedLocation));
   }, [selectedDate, selectedLocation]);
 
-  //we take 'isSubmiting" from the context. once the 'isSubmiting'
+  //we take 'hasValidationFailed" from the context. once the 'hasValidationFailed'
   //changes to true, we deal with our inputs as if they were touched
   useEffect(() => {
-    if (isSubmiting) {
+    if (isValidationError) {
       setIsDateTouched(true);
       setIsLocationTouched(true);
     }
-  }, [isSubmiting]);
+  }, [isValidationError]);
 
   //calling context
   const handleSubmit = e => {
     e.preventDefault();
-    onSubmitForm();
+
+    const data = {
+      date,
+      location,
+      exercises,
+    };
+
+    const isFormValid = checkFormValidity(data);
+    if (!isFormValid) {
+      dispatch(trainingFormActions.changeValidationError(true));
+      return;
+    }
+
+    dispatch(sendNewTraining(data));
+    history.push('/');
   };
 
   //updating local state for inputs (date and location)
@@ -63,7 +76,11 @@ const TrainingForm = () => {
 
   //adding new form on button click
   const handleAddExerciseForm = () => {
-    onAddBlankExerciseForm();
+    dispatch(trainingFormActions.addBlankExerciseForm());
+  };
+
+  const handleClearForm = () => {
+    dispatch(trainingFormActions.clearForm());
   };
 
   //variable with array of components for exercise forms rendering
@@ -109,7 +126,7 @@ const TrainingForm = () => {
         <button type='button' onClick={handleAddExerciseForm}>
           Add new exercise
         </button>
-        <button type='button' onClick={onClearForm}>
+        <button type='button' onClick={handleClearForm}>
           Clear All
         </button>
         <button type='submit'>Submit form</button>

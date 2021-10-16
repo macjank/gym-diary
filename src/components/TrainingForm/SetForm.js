@@ -1,11 +1,15 @@
 import React from 'react';
-import { useContext, useEffect, useState } from 'react/cjs/react.development';
-import TrainingFormContext from '../../store/trainingForm-context';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react/cjs/react.development';
+import { trainingFormActions } from '../../store/trainingForm-slice';
 import styles from '../../styles/TrainingForm/SetForm.module.scss';
 
 const SetForm = ({ parentId, id }) => {
-  const { exercises, onChangeSetInfo, onRemoveSetForm, isSubmiting } =
-    useContext(TrainingFormContext);
+  const { exercises, isValidationError } = useSelector(
+    state => state.trainingForm
+  );
+  const dispatch = useDispatch();
 
   const currentSet = exercises.find(exercise => exercise.id === parentId).sets[
     id
@@ -31,18 +35,20 @@ const SetForm = ({ parentId, id }) => {
       weight: selectedWeight,
       reps: selectedReps,
     };
-    onChangeSetInfo(data);
+    //onChangeSetInfo(data);
+    dispatch(trainingFormActions.editSet(data));
   }, [selectedWeight, selectedReps]);
 
   useEffect(() => {
-    if (isSubmiting) {
+    if (isValidationError) {
       setIsWeightTouched(true);
       setIsRepsTouched(true);
     }
-  }, [isSubmiting]);
+  }, [isValidationError]);
 
   const handleRemoveSet = () => {
-    onRemoveSetForm({ parentId, id });
+    //onRemoveSetForm({ parentId, id });
+    dispatch(trainingFormActions.removeSet({ parentId, id }));
   };
 
   const weightClasses = isWeightNOK ? `${styles.error}` : '';
