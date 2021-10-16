@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
-import TrainingsContext from '../../store/trainings-context';
+import { useSelector } from 'react-redux';
 import SingleTrainingPreview from './SingleTrainingPreview';
 
 const TrainingsPreview = () => {
-  const { trainings } = useContext(TrainingsContext);
+  const { trainings } = useSelector(state => state.trainingsBase);
 
   return (
     <ul>
