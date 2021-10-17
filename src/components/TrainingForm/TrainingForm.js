@@ -5,16 +5,21 @@ import { useEffect, useState } from 'react/cjs/react.development';
 import styles from '../../styles/TrainingForm/TrainingForm.module.scss';
 import ExerciseForm from './ExerciseForm';
 import { trainingFormActions } from '../../store/trainingForm-slice';
-import { sendNewTraining } from '../../store/trainingForm-actions';
 import checkFormValidity from '../../helpers/checkFormValidity';
 import { useHistory } from 'react-router';
+import { trainingsBaseActions } from '../../store/trainingsBase-slice';
 
 const TrainingForm = () => {
   const history = useHistory();
-  const { date, location, exercises, isValidationError } = useSelector(
+  const { date, location, id, exercises, isValidationError } = useSelector(
     state => state.trainingForm
   );
   const dispatch = useDispatch();
+
+  //seting the id of the new form once the component is rendered
+  useEffect(() => {
+    dispatch(trainingFormActions.setId());
+  }, [dispatch]);
 
   //local state managing inputs
   const [selectedDate, setSelectedDate] = useState(date);
@@ -50,8 +55,11 @@ const TrainingForm = () => {
     const data = {
       date,
       location,
+      id,
       exercises,
     };
+
+    console.log(data);
 
     const isFormValid = checkFormValidity(data);
     if (!isFormValid) {
@@ -59,7 +67,7 @@ const TrainingForm = () => {
       return;
     }
 
-    dispatch(sendNewTraining(data));
+    dispatch(trainingsBaseActions.addTraining(data));
     history.push('/');
   };
 

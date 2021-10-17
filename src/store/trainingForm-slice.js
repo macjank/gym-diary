@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   date: '',
   location: '',
+  id: '',
   exercises: [],
   isValidationError: false,
 };
@@ -11,6 +12,9 @@ const trainingFormSlice = createSlice({
   name: 'trainingForm',
   initialState,
   reducers: {
+    setId(state) {
+      state.id = Date.now().toString();
+    },
     clearForm() {
       return initialState;
     },
@@ -21,7 +25,7 @@ const trainingFormSlice = createSlice({
       state.location = action.payload;
     },
     addBlankExerciseForm(state) {
-      const id = Date.now();
+      const id = Date.now().toString();
       const blankExercise = {
         id,
         musclePart: '',
