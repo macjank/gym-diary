@@ -3,10 +3,7 @@ import './App.css';
 import Layout from './components/UI/Layout';
 import Home from './pages/Home';
 import NewTraining from './pages/NewTraining';
-import { TrainingsContextProvider } from './store/trainings-context';
-import { ExerciseBaseContextProvider } from './store/exerciseBase-context';
 import './styles/global.scss';
-import { TrainingFormContextProvider } from './store/trainingForm-context';
 import { useDispatch } from 'react-redux';
 import { exercisesBaseActions } from './store/exercisesBase-slice';
 import { useCallback, useEffect } from 'react/cjs/react.development';
@@ -35,7 +32,7 @@ function App() {
     } catch (error) {
       console.log(error);
     }
-  }, [exercisesBaseURL]);
+  }, [dispatch]);
 
   const getTrainingsBase = useCallback(async () => {
     try {
@@ -66,12 +63,12 @@ function App() {
     } catch (error) {
       console.log(error);
     }
-  }, [trainingsURL]);
+  }, [dispatch]);
 
   useEffect(() => {
     getExercisesBase();
     getTrainingsBase();
-  }, []);
+  }, [getExercisesBase, getTrainingsBase]);
 
   return (
     <Layout>

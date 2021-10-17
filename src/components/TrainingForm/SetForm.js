@@ -37,7 +37,7 @@ const SetForm = ({ parentId, id }) => {
     };
     //onChangeSetInfo(data);
     dispatch(trainingFormActions.editSet(data));
-  }, [selectedWeight, selectedReps]);
+  }, [selectedWeight, selectedReps, dispatch, parentId, id]);
 
   useEffect(() => {
     if (isValidationError) {

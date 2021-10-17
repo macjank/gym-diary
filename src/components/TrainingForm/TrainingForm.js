@@ -32,7 +32,7 @@ const TrainingForm = () => {
   useEffect(() => {
     dispatch(trainingFormActions.changeDate(selectedDate));
     dispatch(trainingFormActions.changeLocation(selectedLocation));
-  }, [selectedDate, selectedLocation]);
+  }, [selectedDate, selectedLocation, dispatch]);
 
   //we take 'hasValidationFailed" from the context. once the 'hasValidationFailed'
   //changes to true, we deal with our inputs as if they were touched

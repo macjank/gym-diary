@@ -1,5 +1,3 @@
-import { Redirect, useHistory } from 'react-router';
-import checkFormValidity from '../helpers/checkFormValidity';
 import { trainingFormActions } from './trainingForm-slice';
 
 const URL =
@@ -7,8 +5,6 @@ const URL =
 
 export const sendNewTraining = data => {
   return async dispatch => {
-    
-
     const sendRequest = async () => {
       const response = await fetch(URL, {
         method: 'POST',
@@ -17,6 +13,10 @@ export const sendNewTraining = data => {
         },
         body: JSON.stringify(data),
       });
+
+      if (!response.ok) {
+        throw Error('could not send data');
+      }
     };
 
     try {

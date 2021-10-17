@@ -57,7 +57,7 @@ const ExerciseForm = ({ id }) => {
         exerciseName: selectedExercise,
       })
     );
-  }, [id, selectedMusclePart, selectedExercise]);
+  }, [id, selectedMusclePart, selectedExercise, dispatch]);
 
   useEffect(() => {
     if (isValidationError) {
