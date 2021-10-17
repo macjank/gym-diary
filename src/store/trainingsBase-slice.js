@@ -11,9 +11,10 @@ const trainingsBaseSlice = createSlice({
     replaceTrainingsBase(state, action) {
       state.trainings = action.payload;
     },
-    addTrainingToBase(state, action) {
+    addTraining(state, action) {
       state.trainings.push(action.payload);
     },
+
   },
 });
 
