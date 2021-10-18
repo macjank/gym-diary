@@ -1,0 +1,35 @@
+@import '../variables';
+
+.exercise {
+  padding: 1rem 0;
+  border-bottom: 1px solid $blue2;
+
+  &__name {
+    text-transform: capitalize;
+    text-align: center;
+  }
+
+  &__muscle {
+    margin-top: 1rem;
+    font-weight: 300;
+    text-align: center;
+  }
+
+  &__set {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+
+    &__legend > *, &__singleSet > * {
+      padding: 0.5em;
+      margin: 0.2em;
+      background-color: $blue1;
+      color: #fff;
+    }
+
+    &__singleSet > * {
+      text-align: center;
+    }
+  }
+}

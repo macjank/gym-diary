@@ -2,6 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   trainings: [],
+  isLoading: true,
+  isError: false,
 };
 
 const trainingsBaseSlice = createSlice({
@@ -14,7 +16,12 @@ const trainingsBaseSlice = createSlice({
     addTraining(state, action) {
       state.trainings.push(action.payload);
     },
-
+    setIsLoading(state, action) {
+      state.isLoading = action.payload;
+    },
+    setIsError(state, action) {
+      state.isError = action.isError;
+    },
   },
 });
 

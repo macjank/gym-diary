@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react/cjs/react.development';
 import { getTrainings, sendTrainings } from './store/trainingBase-actions';
 import { getExercises } from './store/exerciseBase-actions';
+import TrainingDetails from './components/Trainings/TrainingDetails';
 
 let firstRun = true;
 
@@ -38,6 +39,9 @@ function App() {
         </Route>
         <Route path='/new-training'>
           <NewTraining />
+        </Route>
+        <Route path='/trainings/:trainingId'>
+          <TrainingDetails />
         </Route>
       </Switch>
     </Layout>

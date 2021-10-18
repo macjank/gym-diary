@@ -1,9 +1,27 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import SingleTrainingPreview from './SingleTrainingPreview';
+import styles from '../../styles/Trainings/TrainingsPreview.module.scss';
+import LoadingSpinner from '../UI/LoadingSpinner';
 
 const TrainingsPreview = () => {
-  const { trainings } = useSelector(state => state.trainingsBase);
+  const { trainings, isLoading } = useSelector(state => state.trainingsBase);
+
+  if (isLoading) {
+    return (
+      <main className={styles.loadingContainer}>
+        <LoadingSpinner />
+      </main>
+    );
+  }
+
+  if (trainings.length === 0) {
+    return (
+      <div className={styles.empty}>
+        <h2>The list is empty. Add some trainings</h2>
+      </div>
+    );
+  }
 
   return (
     <ul>

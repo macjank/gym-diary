@@ -10,6 +10,17 @@
   }
 }
 
+.btnContainer {
+  background-color: $grey1;
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+}
+
 .btnNewTraining {
   width: 120px;
   height: 70px;

@@ -6,10 +6,14 @@ const URL =
 
 export const getTrainings = () => {
   return async dispatch => {
+    dispatch(trainingsBaseActions.setIsLoading(true));
+
     const sendRequest = async () => {
       const response = await fetch(URL);
 
       if (!response.ok) {
+        dispatch(trainingsBaseActions.setIsLoading(false));
+        dispatch(trainingsBaseActions.setIsError(true));
         throw Error('could not get data');
       }
 
@@ -28,6 +32,7 @@ export const getTrainings = () => {
       }
 
       dispatch(trainingsBaseActions.replaceTrainingsBase(loadedTrainings));
+      dispatch(trainingsBaseActions.setIsLoading(false));
     };
 
     try {
@@ -39,7 +44,6 @@ export const getTrainings = () => {
 };
 
 export const sendTrainings = data => {
-  console.log(data);
   return async dispatch => {
     const sendRequest = async () => {
       const response = await fetch(URL, {
