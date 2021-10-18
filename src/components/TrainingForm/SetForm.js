@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { useEffect, useState } from 'react/cjs/react.development';
 import { trainingFormActions } from '../../store/trainingForm-slice';
 import styles from '../../styles/TrainingForm/SetForm.module.scss';
 

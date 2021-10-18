@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '../Header/Header';
-import { useState } from 'react/cjs/react.development';
+//import { useState } from 'react/cjs/react.development';
 import Nav from '../Header/Nav';
 import styles from '../../styles/UI/Layout.module.scss';
 

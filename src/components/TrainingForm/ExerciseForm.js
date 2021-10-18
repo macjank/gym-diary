@@ -1,6 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
-import { useEffect } from 'react/cjs/react.development';
+import { useState, useEffect } from 'react';
 import SetForm from './SetForm';
 import styles from '../../styles/TrainingForm/ExerciseForm.module.scss';
 import { useSelector } from 'react-redux';
