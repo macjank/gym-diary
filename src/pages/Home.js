@@ -7,9 +7,11 @@ const Home = () => {
   return (
     <main className={styles.home}>
       <TrainingsPreview />
-      <Link to="/new-training">
-        <button className={styles.btnNewTraining}>Add new training</button>
-      </Link>
+      <div className={styles.btnContainer}>
+        <Link to='/new-training'>
+          <button className={styles.btnNewTraining}>Add new training</button>
+        </Link>
+      </div>
     </main>
   );
 };
