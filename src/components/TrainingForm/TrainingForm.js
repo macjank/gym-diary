@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { useEffect, useState } from 'react/cjs/react.development';
+//import { useEffect, useState } from 'react/cjs/react.development';
 import styles from '../../styles/TrainingForm/TrainingForm.module.scss';
 import ExerciseForm from './ExerciseForm';
 import { trainingFormActions } from '../../store/trainingForm-slice';

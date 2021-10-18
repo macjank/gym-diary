@@ -5,7 +5,7 @@ import Home from './pages/Home';
 import NewTraining from './pages/NewTraining';
 import './styles/global.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react/cjs/react.development';
+import { useEffect } from 'react';
 import { getTrainings, sendTrainings } from './store/trainingBase-actions';
 import { getExercises } from './store/exerciseBase-actions';
 import TrainingDetails from './components/Trainings/TrainingDetails';
