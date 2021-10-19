@@ -24,3 +24,27 @@ export const getExercises = () => {
     }
   };
 };
+
+export const sendExercises = data => {
+  return async () => {
+    const sendRequest = async () => {
+      const response = await fetch(URL, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw Error('could not send data');
+      }
+    };
+
+    try {
+      sendRequest();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};

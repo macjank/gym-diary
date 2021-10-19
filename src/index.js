@@ -5,7 +5,6 @@ import App from './App';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store/index';
-//import { TrainingsContextProvider } from "./store/trainings-context";
 
 ReactDOM.render(
   <React.StrictMode>

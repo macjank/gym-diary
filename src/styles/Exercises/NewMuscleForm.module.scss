@@ -1,0 +1,39 @@
+@import '../variables';
+
+.form {
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  &__title {
+    margin: 3rem auto 1rem auto;
+    color: $blue4;
+    font-weight: 400;
+    font-size: 1.5rem;
+  }
+
+  input {
+    width: 100%;
+    height: 3rem;
+  }
+
+  button {
+    width: 100%;
+    height: 3rem;
+    margin: auto;
+    color: $grey0;
+    padding: 1rem;
+    background-color: $blue2;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: $primaryFont;
+    font-size: 1rem;
+
+    &:hover {
+      background: linear-gradient(to bottom, $blue2 5%, $blue4 100%);
+    }
+  }
+}
