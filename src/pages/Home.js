@@ -9,7 +9,7 @@ const Home = () => {
       <TrainingsPreview />
       <div className={styles.btnContainer}>
         <Link to='/new-training'>
-          <button className={styles.btnNewTraining}>Add new training</button>
+          <button className={styles.btnContainer__btn}>Add new training</button>
         </Link>
       </div>
     </main>

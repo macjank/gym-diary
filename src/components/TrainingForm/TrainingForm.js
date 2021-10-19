@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-//import { useEffect, useState } from 'react/cjs/react.development';
 import styles from '../../styles/TrainingForm/TrainingForm.module.scss';
 import ExerciseForm from './ExerciseForm';
 import { trainingFormActions } from '../../store/trainingForm-slice';
@@ -59,8 +58,6 @@ const TrainingForm = () => {
       exercises,
     };
 
-    console.log(data);
-
     const isFormValid = checkFormValidity(data);
     if (!isFormValid) {
       dispatch(trainingFormActions.changeValidationError(true));
@@ -92,18 +89,18 @@ const TrainingForm = () => {
   };
 
   //variable with array of components for exercise forms rendering
-  const exercisesContent = exercises.map(exercise => (
-    <ExerciseForm key={exercise.id} id={exercise.id} />
+  const exercisesContent = exercises.map((exercise, index) => (
+    <ExerciseForm key={exercise.id} id={exercise.id} index={index} />
   ));
 
   //managing the classes depending on the isSometingNOK for the purpose of the styling
   const dateClasses = isDateNOK
-    ? `${styles.form__generalInfo__date} ${styles.error}`
-    : styles.form__generalInfo__date;
+    ? `${styles.form__generalInfo} ${styles.error}`
+    : styles.form__generalInfo;
 
   const locationClasses = isLocationNOK
-    ? `${styles.form__generalInfo__location} ${styles.error}`
-    : styles.form__generalInfo__location;
+    ? `${styles.form__generalInfo} ${styles.error}`
+    : styles.form__generalInfo;
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
@@ -132,12 +129,14 @@ const TrainingForm = () => {
 
       <div className={styles.form__btnContainer}>
         <button type='button' onClick={handleAddExerciseForm}>
-          Add new exercise
+          Add exercise
+        </button>
+        <button className={styles.form__btnContainer__submitBtn} type='submit'>
+          Submit
         </button>
         <button type='button' onClick={handleClearForm}>
-          Clear All
+          Clear all
         </button>
-        <button type='submit'>Submit form</button>
       </div>
     </form>
   );

@@ -1,10 +1,48 @@
+@import '../variables';
+
 .exerciseForm {
-  background-color: aqua;
-  margin: 1rem;
+  margin: 3rem 0;
+
+  &__title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    h3 {
+      font-size: 1.4rem;
+      margin-right: 1rem;
+    }
+  }
+
+  &__muscle {
+    label,
+    select {
+      display: block;
+      padding: 1em;
+      width: 100%;
+      height: 3rem;
+    }
+  }
 }
 
 .error {
   select {
     background-color: salmon;
+  }
+}
+
+.btnContainer {
+  margin-top: 1rem;
+  width: 100%;
+
+  button {
+    width: 6em;
+    height: 3em;
+    color: $grey0;
+    padding: 1rem;
+    background-color: $blue2;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
   }
 }

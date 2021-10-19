@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { trainingFormActions } from '../../store/trainingForm-slice';
 import styles from '../../styles/TrainingForm/SetForm.module.scss';
+import { FaTimes } from 'react-icons/fa';
 
 const SetForm = ({ parentId, id }) => {
   const { exercises, isValidationError } = useSelector(
@@ -55,28 +56,31 @@ const SetForm = ({ parentId, id }) => {
   const repsClasses = isRepsNOK ? `${styles.error}` : '';
 
   return (
-    <div>
-      <div className={weightClasses}>
-        <label htmlFor='weight'>Weight</label>
-        <input
-          type='number'
-          name='weight'
-          value={selectedWeight ? selectedWeight : ''}
-          onChange={e => setSelectedWeight(parseFloat(e.target.value))}
-        />
+    <div className={styles.setForm}>
+      <div className={styles.setForm__title}>
+        <h3>Set {id + 1}</h3>
+        <FaTimes size='30px' onClick={handleRemoveSet} />
       </div>
-      <div className={repsClasses}>
-        <label htmlFor='reps'>Repetitions</label>
-        <input
-          type='number'
-          name='reps'
-          value={selectedReps ? selectedReps : ''}
-          onChange={e => setSelectedReps(parseFloat(e.target.value))}
-        />
+      <div className={styles.setForm__inputs}>
+        <div className={weightClasses}>
+          <label htmlFor='weight'>Weight (kg)</label>
+          <input
+            type='number'
+            name='weight'
+            value={selectedWeight ? selectedWeight : ''}
+            onChange={e => setSelectedWeight(parseFloat(e.target.value))}
+          />
+        </div>
+        <div className={repsClasses}>
+          <label htmlFor='reps'>Repetitions</label>
+          <input
+            type='number'
+            name='reps'
+            value={selectedReps ? selectedReps : ''}
+            onChange={e => setSelectedReps(parseFloat(e.target.value))}
+          />
+        </div>
       </div>
-      <button type='button' onClick={handleRemoveSet}>
-        Remove set
-      </button>
     </div>
   );
 };

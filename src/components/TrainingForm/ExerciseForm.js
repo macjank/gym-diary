@@ -5,8 +5,9 @@ import styles from '../../styles/TrainingForm/ExerciseForm.module.scss';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { trainingFormActions } from '../../store/trainingForm-slice';
+import { FaTimes } from 'react-icons/fa';
 
-const ExerciseForm = ({ id }) => {
+const ExerciseForm = ({ id, index }) => {
   const { exercises, isValidationError } = useSelector(
     state => state.trainingForm
   );
@@ -93,7 +94,11 @@ const ExerciseForm = ({ id }) => {
 
   return (
     <div className={styles.exerciseForm}>
-      <div>
+      <div className={styles.exerciseForm__title}>
+        <h3>Exercise {index + 1}</h3>
+        <FaTimes size='30px' onClick={handleRemoveExercise} />
+      </div>
+      <div className={styles.exerciseForm__muscle}>
         <div className={muscleClasses}>
           <label htmlFor='muscle'>Muscle part:</label>
           <select
@@ -136,12 +141,11 @@ const ExerciseForm = ({ id }) => {
 
       {setsForms}
 
-      <button type='button' onClick={handleAddNewSetForm}>
-        Add set
-      </button>
-      <button type='button' onClick={handleRemoveExercise}>
-        Remove exercise
-      </button>
+      <div className={styles.btnContainer}>
+        <button type='button' onClick={handleAddNewSetForm}>
+          Add set
+        </button>
+      </div>
     </div>
   );
 };
