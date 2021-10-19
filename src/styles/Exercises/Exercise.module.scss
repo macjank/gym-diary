@@ -1,0 +1,18 @@
+@import '../variables';
+
+.exercise {
+  display: grid;
+  grid-template-columns: auto 50px;
+  align-items: center;
+
+  &__name {
+      text-transform: capitalize;
+  }
+
+  &__icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+}
