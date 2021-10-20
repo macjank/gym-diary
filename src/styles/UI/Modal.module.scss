@@ -1,0 +1,23 @@
+@import '../variables';
+
+.backdrop {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  background-color: rgba($color: #000000, $alpha: 0.4);
+}
+
+.modal {
+  background-color: $grey0;
+  width: 90vw;
+  max-width: 600px;
+  height: 400px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

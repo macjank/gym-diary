@@ -82,6 +82,14 @@ const trainingFormSlice = createSlice({
     changeValidationError(state, action) {
       state.isValidationError = action.payload;
     },
+    replaceData(state, action) {
+      const { date, location, id, exercises } = action.payload;
+      
+      state.date = date;
+      state.location = location;
+      state.id = id;
+      state.exercises = exercises;
+    },
   },
 });
 
