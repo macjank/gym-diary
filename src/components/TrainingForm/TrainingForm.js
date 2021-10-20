@@ -7,6 +7,7 @@ import { trainingFormActions } from '../../store/trainingForm-slice';
 import checkFormValidity from '../../helpers/checkFormValidity';
 import { useHistory } from 'react-router';
 import { trainingsBaseActions } from '../../store/trainingsBase-slice';
+import Modal from '../UI/Modal';
 
 const TrainingForm = () => {
   const history = useHistory();
@@ -17,8 +18,10 @@ const TrainingForm = () => {
 
   //seting the id of the new form once the component is rendered
   useEffect(() => {
-    dispatch(trainingFormActions.setId());
-  }, [dispatch]);
+    if (!id) {
+      dispatch(trainingFormActions.setId());
+    }
+  }, [dispatch, id]);
 
   //local state managing inputs
   const [selectedDate, setSelectedDate] = useState(date);
@@ -31,6 +34,8 @@ const TrainingForm = () => {
   //variables which are being used for displaying error
   const isDateNOK = selectedDate === '' && isDateTouched;
   const isLocationNOK = selectedLocation === '' && isLocationTouched;
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   //updating the context every time inputs are changed
   useEffect(() => {
@@ -86,6 +91,7 @@ const TrainingForm = () => {
 
   const handleClearForm = () => {
     dispatch(trainingFormActions.clearForm());
+    setIsDeleteModalOpen(false);
   };
 
   //variable with array of components for exercise forms rendering
@@ -102,43 +108,67 @@ const TrainingForm = () => {
     ? `${styles.form__generalInfo} ${styles.error}`
     : styles.form__generalInfo;
 
+  const handleOpenDeleteModal = () => setIsDeleteModalOpen(true);
+
+  const handleCloseDeleteModal = () => setIsDeleteModalOpen(false);
+
+  const modal = (
+    <Modal onClose={handleCloseDeleteModal}>
+      <div className={styles.modalContent}>
+        <h2 className={styles.modalContent__header}>
+          Are you sure you want to clear the form?
+        </h2>
+        <div className={styles.modalContent__buttons}>
+          <button onClick={handleCloseDeleteModal}>Not so sure...</button>
+          <button onClick={handleClearForm}>Yes</button>
+        </div>
+      </div>
+    </Modal>
+  );
+
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
-      <div className={dateClasses}>
-        <div className={styles.form__generalInfo__date}>
-          <label htmlFor='date'>Date</label>
-          <input
-            type='date'
-            id='date'
-            value={selectedDate}
-            onChange={handleChangeDate}
-          />
+    <>
+      {isDeleteModalOpen && modal}
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <div className={dateClasses}>
+          <div className={styles.form__generalInfo__date}>
+            <label htmlFor='date'>Date</label>
+            <input
+              type='date'
+              id='date'
+              value={selectedDate}
+              onChange={handleChangeDate}
+            />
+          </div>
+          <div className={locationClasses}>
+            <label htmlFor='location'>Location (gym)</label>
+            <input
+              type='text'
+              id='location'
+              value={selectedLocation}
+              onChange={handleChangeLocation}
+            />
+          </div>
         </div>
-        <div className={locationClasses}>
-          <label htmlFor='location'>Location (gym)</label>
-          <input
-            type='text'
-            id='location'
-            value={selectedLocation}
-            onChange={handleChangeLocation}
-          />
+
+        {exercisesContent}
+
+        <div className={styles.form__btnContainer}>
+          <button type='button' onClick={handleAddExerciseForm}>
+            Add exercise
+          </button>
+          <button
+            className={styles.form__btnContainer__submitBtn}
+            type='submit'
+          >
+            Submit
+          </button>
+          <button type='button' onClick={handleOpenDeleteModal}>
+            Clear all
+          </button>
         </div>
-      </div>
-
-      {exercisesContent}
-
-      <div className={styles.form__btnContainer}>
-        <button type='button' onClick={handleAddExerciseForm}>
-          Add exercise
-        </button>
-        <button className={styles.form__btnContainer__submitBtn} type='submit'>
-          Submit
-        </button>
-        <button type='button' onClick={handleClearForm}>
-          Clear all
-        </button>
-      </div>
-    </form>
+      </form>
+    </>
   );
 };
 
