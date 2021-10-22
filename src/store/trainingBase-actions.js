@@ -12,9 +12,7 @@ export const getTrainings = () => {
       const response = await fetch(URL);
 
       if (!response.ok) {
-        dispatch(trainingsBaseActions.setIsLoading(false));
-        dispatch(trainingsBaseActions.setIsError(true));
-        throw Error('could not get data');
+        throw Error('could not get trainings data');
       }
 
       const data = await response.json();
@@ -32,12 +30,15 @@ export const getTrainings = () => {
       }
 
       dispatch(trainingsBaseActions.replaceTrainingsBase(loadedTrainings));
-      dispatch(trainingsBaseActions.setIsLoading(false));
     };
 
     try {
-      sendRequest();
+      await sendRequest();
+      dispatch(trainingsBaseActions.setIsError(false));
+      dispatch(trainingsBaseActions.setIsLoading(false));
     } catch (error) {
+      dispatch(trainingsBaseActions.setIsError(true));
+      dispatch(trainingsBaseActions.setIsLoading(false));
       console.log(error);
     }
   };

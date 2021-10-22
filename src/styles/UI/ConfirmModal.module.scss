@@ -1,22 +1,5 @@
 @import '../variables';
 
-.exercise {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  &__name {
-    text-transform: capitalize;
-  }
-
-  &__icon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-  }
-}
-
 .modalContent {
   text-align: center;
 

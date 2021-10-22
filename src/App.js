@@ -1,5 +1,4 @@
 import { Route, Switch } from 'react-router';
-import './App.css';
 import Layout from './components/UI/Layout';
 import Home from './pages/Home';
 import NewTraining from './pages/NewTraining';
@@ -10,13 +9,17 @@ import { getTrainings, sendTrainings } from './store/trainingBase-actions';
 import { getExercises, sendExercises } from './store/exerciseBase-actions';
 import TrainingDetails from './components/Trainings/TrainingDetails';
 import Exercises from './pages/Exercises';
+import NotFound from './pages/NotFound';
+import Trainings from './pages/Trainings';
 
-let firstRun = true;
+let firstRunTrainings = true;
 let firstRunExercises = true;
 
 function App() {
+  //importing state from redux slices
   const { trainings } = useSelector(state => state.trainingsBase);
   const { exercises } = useSelector(state => state.exercisesBase);
+
   const dispatch = useDispatch();
 
   //getting trainings from database at the first run
@@ -25,10 +28,10 @@ function App() {
     dispatch(getExercises());
   }, [dispatch]);
 
-  //sending trainings to the db every times they change (except the first run)
+  //sending trainings to the db every time they change (except the first run)
   useEffect(() => {
-    if (firstRun) {
-      firstRun = false;
+    if (firstRunTrainings) {
+      firstRunTrainings = false;
       return;
     }
     dispatch(sendTrainings(trainings));
@@ -48,6 +51,9 @@ function App() {
         <Route path='/' exact>
           <Home />
         </Route>
+        <Route path='/trainings' exact> 
+          <Trainings />
+        </Route>
         <Route path='/new-training'>
           <NewTraining />
         </Route>
@@ -56,6 +62,9 @@ function App() {
         </Route>
         <Route path='/exercises'>
           <Exercises />
+        </Route>
+        <Route path='/'>
+          <NotFound />
         </Route>
       </Switch>
     </Layout>

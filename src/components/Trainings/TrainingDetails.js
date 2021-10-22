@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
-import { Link } from 'react-router-dom';
 import styles from '../../styles/Trainings/TrainingDetails.module.scss';
 import LoadingSpinner from '../UI/LoadingSpinner';
 import ExerciseDetails from './ExerciseDetails';
@@ -10,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import { trainingFormActions } from '../../store/trainingForm-slice';
 import { trainingsBaseActions } from '../../store/trainingsBase-slice';
 import Modal from '../UI/Modal';
+import NotFound from '../../pages/NotFound';
 
 const TrainingDetails = () => {
   const { trainingId } = useParams();
@@ -28,14 +28,7 @@ const TrainingDetails = () => {
   }
 
   if (trainings.every(training => training.id !== trainingId)) {
-    return (
-      <main className={styles.notFound}>
-        <h2>Training not found</h2>
-        <Link to='/'>
-          <button>Go home</button>
-        </Link>
-      </main>
-    );
+    return <NotFound />;
   }
 
   const { location, date, exercises } = trainings.find(

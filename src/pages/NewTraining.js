@@ -6,7 +6,6 @@ const NewTraining = () => {
   return (
     <main className={styles.newTraining}>
       <h2>Add new training</h2>
-
       <TrainingForm />
     </main>
   );

@@ -2,6 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   exercises: [],
+  isLoading: true,
+  isError: false,
 };
 
 const exercisesBaseSlice = createSlice({
@@ -9,7 +11,8 @@ const exercisesBaseSlice = createSlice({
   initialState,
   reducers: {
     replaceExercisesBase(state, action) {
-      state.exercises = action.payload;
+      //dispatching empty string if there are no exercises in the firebase
+      state.exercises = action.payload || [];
     },
     addMuscleToBase(state, action) {
       const newMuscleObject = {
@@ -24,7 +27,7 @@ const exercisesBaseSlice = createSlice({
       if (!muscleItem.exercises) {
         muscleItem.exercises = [];
       }
-      muscleItem.exercises.push(action.payload.exercise);
+      muscleItem.exercises.push(action.payload.exerciseName);
     },
     removeMuscle(state, action) {
       state.exercises = state.exercises.filter(
@@ -40,6 +43,12 @@ const exercisesBaseSlice = createSlice({
       muscleItem.exercises = muscleItem.exercises.filter(
         exercise => exercise !== exerciseName
       );
+    },
+    setIsLoading(state, action) {
+      state.isLoading = action.payload;
+    },
+    setIsError(state, action) {
+      state.isError = action.payload;
     },
   },
 });
