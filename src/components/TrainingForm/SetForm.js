@@ -6,9 +6,7 @@ import styles from '../../styles/TrainingForm/SetForm.module.scss';
 import { FaTimes } from 'react-icons/fa';
 
 const SetForm = ({ parentId, id }) => {
-  const { exercises, isValidationError } = useSelector(
-    state => state.trainingForm
-  );
+  const { exercises, formError } = useSelector(state => state.trainingForm);
   const dispatch = useDispatch();
 
   const currentSet = exercises.find(exercise => exercise.id === parentId).sets[
@@ -22,8 +20,11 @@ const SetForm = ({ parentId, id }) => {
   const [isRepsTouched, setIsRepsTouched] = useState(false);
 
   const isWeightNOK =
-    isWeightTouched && (!selectedWeight || selectedWeight <= 0);
-  const isRepsNOK = isRepsTouched && (!selectedReps || selectedReps <= 0);
+    isWeightTouched &&
+    (!selectedWeight || selectedWeight <= 0) &&
+    formError.isError;
+  const isRepsNOK =
+    isRepsTouched && (!selectedReps || selectedReps <= 0) && formError.isError;
 
   useEffect(() => {
     if (!selectedWeight || !selectedReps) {
@@ -40,11 +41,11 @@ const SetForm = ({ parentId, id }) => {
   }, [selectedWeight, selectedReps, dispatch, parentId, id]);
 
   useEffect(() => {
-    if (isValidationError) {
+    if (formError.isError) {
       setIsWeightTouched(true);
       setIsRepsTouched(true);
     }
-  }, [isValidationError]);
+  }, [formError.isError]);
 
   const handleRemoveSet = () => {
     //onRemoveSetForm({ parentId, id });
@@ -59,23 +60,25 @@ const SetForm = ({ parentId, id }) => {
     <div className={styles.setForm}>
       <div className={styles.setForm__title}>
         <h3>Set {id + 1}</h3>
-        <FaTimes size='30px' onClick={handleRemoveSet} />
+        <FaTimes size="30px" onClick={handleRemoveSet} />
       </div>
       <div className={styles.setForm__inputs}>
         <div className={weightClasses}>
-          <label htmlFor='weight'>Weight (kg)</label>
+          <label htmlFor="weight">Weight (kg)</label>
           <input
-            type='number'
-            name='weight'
+            type="number"
+            min="0"
+            name="weight"
             value={selectedWeight ? selectedWeight : ''}
             onChange={e => setSelectedWeight(parseFloat(e.target.value))}
           />
         </div>
         <div className={repsClasses}>
-          <label htmlFor='reps'>Repetitions</label>
+          <label htmlFor="reps">Repetitions</label>
           <input
-            type='number'
-            name='reps'
+            type="number"
+            min="1"
+            name="reps"
             value={selectedReps ? selectedReps : ''}
             onChange={e => setSelectedReps(parseFloat(e.target.value))}
           />

@@ -30,7 +30,7 @@ const checkFormValidity = data => {
 
   if (!isDateValid) {
     formValidity = {
-      status: false,
+      isError: true,
       message: 'Pick some date',
     };
     return formValidity;
@@ -38,7 +38,7 @@ const checkFormValidity = data => {
 
   if (!isLocationValid) {
     formValidity = {
-      status: false,
+      isError: true,
       message: 'Invalid location',
     };
     return formValidity;
@@ -46,7 +46,7 @@ const checkFormValidity = data => {
 
   if (!areExerciseFormsPresent) {
     formValidity = {
-      status: false,
+      isError: true,
       message: 'Enter some exercises',
     };
     return formValidity;
@@ -54,7 +54,7 @@ const checkFormValidity = data => {
 
   if (!areExerciseFormsValid) {
     formValidity = {
-      status: false,
+      isError: true,
       message: 'Correct your exercise data',
     };
     return formValidity;
@@ -62,7 +62,7 @@ const checkFormValidity = data => {
 
   if (!areSetFormsPresent) {
     formValidity = {
-      status: false,
+      isError: true,
       message: 'Some of your exercises have no sets.',
     };
     return formValidity;
@@ -70,14 +70,14 @@ const checkFormValidity = data => {
 
   if (!areSetFormsValid) {
     formValidity = {
-      status: false,
+      isError: true,
       message: 'Correct your sets data',
     };
     return formValidity;
   }
 
   formValidity = {
-    status: true,
+    isError: false,
     message: '',
   };
 

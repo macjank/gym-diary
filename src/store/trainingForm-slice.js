@@ -5,8 +5,8 @@ const initialState = {
   location: '',
   id: '',
   exercises: [],
-  validationError: {
-    status: false,
+  formError: {
+    isError: false,
     message: '',
   },
 };
@@ -82,8 +82,8 @@ const trainingFormSlice = createSlice({
         (set, index) => index !== id
       );
     },
-    changeValidationError(state, action) {
-      state.validationError = action.payload;
+    handleFormError(state, action) {
+      state.formError = action.payload;
     },
     replaceData(state, action) {
       const { date, location, id, exercises } = action.payload;

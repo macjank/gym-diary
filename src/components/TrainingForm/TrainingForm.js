@@ -14,7 +14,7 @@ import useInfoModal from '../../hooks/useInfoModal';
 const TrainingForm = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { date, location, id, exercises, validationError } = useSelector(
+  const { date, location, id, exercises, formError } = useSelector(
     state => state.trainingForm
   );
 
@@ -28,11 +28,11 @@ const TrainingForm = () => {
 
   //variables which are being used for displaying error
   const isDateNOK =
-    !checkValidityName(selectedDate) && isDateTouched && validationError.status;
+    !checkValidityName(selectedDate) && isDateTouched && formError.isError;
   const isLocationNOK =
     !checkValidityName(selectedLocation) &&
     isLocationTouched &&
-    validationError.status;
+    formError.isError;
 
   //importing modals for clearing the form and showing validation error
   const {
@@ -59,15 +59,15 @@ const TrainingForm = () => {
   //we take 'isValidationError" from the context. once the 'isValidationError'
   //changes to true, we deal with our inputs as if they were touched
   useEffect(() => {
-    if (validationError.status) {
+    if (formError.isError) {
       setIsDateTouched(true);
       setIsLocationTouched(true);
     }
-  }, [validationError]);
+  }, [formError]);
 
   useEffect(() => {
     dispatch(
-      trainingFormActions.changeValidationError({ status: false, message: '' })
+      trainingFormActions.handleFormError({ isError: false, message: '' })
     );
   }, [date, location, exercises, dispatch]);
 
@@ -82,8 +82,8 @@ const TrainingForm = () => {
     };
 
     const formValidity = checkFormValidity(data);
-    if (!formValidity.status) {
-      dispatch(trainingFormActions.changeValidationError(formValidity));
+    if (formValidity.isError) {
+      dispatch(trainingFormActions.handleFormError(formValidity));
       openInfoModal(formValidity.message);
       return;
     }
@@ -130,19 +130,19 @@ const TrainingForm = () => {
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={dateClasses}>
           <div className={styles.form__generalInfo__date}>
-            <label htmlFor='date'>Date</label>
+            <label htmlFor="date">Date</label>
             <input
-              type='date'
-              id='date'
+              type="date"
+              id="date"
               value={selectedDate}
               onChange={handleChangeDate}
             />
           </div>
           <div className={locationClasses}>
-            <label htmlFor='location'>Location (gym)</label>
+            <label htmlFor="location">Location (gym)</label>
             <input
-              type='text'
-              id='location'
+              type="text"
+              id="location"
               value={selectedLocation}
               onChange={handleChangeLocation}
             />
@@ -154,16 +154,16 @@ const TrainingForm = () => {
         ))}
 
         <div className={styles.form__btnContainer}>
-          <button type='button' onClick={handleAddExerciseForm}>
+          <button type="button" onClick={handleAddExerciseForm}>
             Add exercise
           </button>
           <button
             className={styles.form__btnContainer__submitBtn}
-            type='submit'
+            type="submit"
           >
             Save
           </button>
-          <button type='button' onClick={openClearModal}>
+          <button type="button" onClick={openClearModal}>
             Clear all
           </button>
         </div>
