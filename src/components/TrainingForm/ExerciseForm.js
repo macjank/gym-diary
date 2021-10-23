@@ -29,8 +29,10 @@ const ExerciseForm = ({ id, index }) => {
   const [isMuscleTouched, setIsMuscleTouched] = useState(false);
   const [isExerciseTouched, setIsExerciseTouched] = useState(false);
 
-  const isMuscleNOK = selectedMusclePart === '---' && isMuscleTouched;
-  const isExerciseNOK = selectedExercise === '---' && isExerciseTouched;
+  const isMuscleNOK =
+    selectedMusclePart === '---' && isMuscleTouched && isValidationError;
+  const isExerciseNOK =
+    selectedExercise === '---' && isExerciseTouched && isValidationError;
 
   //these variables are here to dynamically change options in the input fields
   const possibleMuscleParts = exerciseBase.map(item => item.musclePart);

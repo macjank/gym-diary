@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import styles from '../../styles/Trainings/TrainingDetails.module.scss';
@@ -8,23 +8,42 @@ import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 import { trainingFormActions } from '../../store/trainingForm-slice';
 import { trainingsBaseActions } from '../../store/trainingsBase-slice';
-import Modal from '../UI/Modal';
 import NotFound from '../../pages/NotFound';
+import useConfirmModal from '../../hooks/useConfirmModal';
+import useTwoActionsModal from '../../hooks/useTwoActionsModal';
 
 const TrainingDetails = () => {
   const { trainingId } = useParams();
-  const { trainings, isLoading } = useSelector(state => state.trainingsBase);
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const { trainings, isLoading } = useSelector(state => state.trainingsBase);
+  const { id } = useSelector(state => state.trainingForm);
+
+  const {
+    modal: deleteModal,
+    onOpenModal: openDeleteModal,
+    isModalOpen: isDeleteModalOpen,
+  } = useConfirmModal({
+    question: 'Are you sure you want to delete this training?',
+    onConfirmAction: handleDeleteTraining,
+  });
+
+  const {
+    modal: editionModal,
+    openModal: openEditionModal,
+    isModalOpen: isEditionModalOpen,
+  } = useTwoActionsModal({
+    question:
+      'There is already some unsaved data in the form. What you gonna do???',
+    onCancelAction: handleShowCurrentForm,
+    onConfirmAction: handleEditTraining,
+    cancelBtnText: 'Show me this unsaved form',
+    confirmBtnText: 'Discard this data and let me edit this training',
+  });
 
   if (isLoading) {
-    return (
-      <main className={styles.loadingContainer}>
-        <LoadingSpinner />
-      </main>
-    );
+    return <LoadingSpinner />;
   }
 
   if (trainings.every(training => training.id !== trainingId)) {
@@ -35,21 +54,12 @@ const TrainingDetails = () => {
     training => training.id === trainingId
   );
 
-  const exercisesDetails = exercises.map(exercise => {
-    const { exerciseName, musclePart, sets, id } = exercise;
-    return (
-      <ExerciseDetails
-        key={id}
-        id={id}
-        exerciseName={exerciseName}
-        musclePart={musclePart}
-        sets={sets}
-      />
-    );
-  });
-
-  const handleEditTraining = () => {
+  function handleShowCurrentForm() {
     history.push('/new-training');
+  }
+
+  function handleEditTraining() {
+    history.push('/edit-training');
     dispatch(
       trainingFormActions.replaceData({
         date,
@@ -58,40 +68,31 @@ const TrainingDetails = () => {
         exercises,
       })
     );
-  };
+  }
 
-  const handleOpenDeleteModal = () => setIsDeleteModalOpen(true);
-
-  const handleCloseDeleteModal = () => setIsDeleteModalOpen(false);
-
-  const handleRemoveTraining = () => {
+  function handleDeleteTraining() {
     history.replace('/');
     dispatch(trainingsBaseActions.removeTraining(trainingId));
-  };
+  }
 
-  const modal = (
-    <Modal onClose={handleCloseDeleteModal}>
-      <div className={styles.modalContent}>
-        <h2 className={styles.modalContent__header}>
-          Are you sure you want to delete this training?
-        </h2>
-        <div className={styles.modalContent__buttons}>
-          <button onClick={handleCloseDeleteModal}>Not so sure...</button>
-          <button onClick={handleRemoveTraining}>Yes</button>
-        </div>
-      </div>
-    </Modal>
-  );
+  const handleTryToEdit = () => {
+    if (id === '') {
+      handleEditTraining();
+    } else {
+      openEditionModal();
+    }
+  };
 
   return (
     <>
-      {isDeleteModalOpen && modal}
+      {isDeleteModalOpen && deleteModal}
+      {isEditionModalOpen && editionModal}
       <main className={styles.training}>
         <div className={styles.training__title}>
           <h2>Training details</h2>
           <div className={styles.training__title__icons}>
-            <FaEdit size='30px' onClick={handleEditTraining} />
-            <FaTrashAlt size='30px' onClick={handleOpenDeleteModal} />
+            <FaEdit size='30px' onClick={handleTryToEdit} />
+            <FaTrashAlt size='30px' onClick={openDeleteModal} />
           </div>
         </div>
         <div className={styles.training__overalInfo}>
@@ -105,7 +106,18 @@ const TrainingDetails = () => {
         <div className={styles.training__details}>
           <h3 className={styles.training__details__title}>Exercises:</h3>
           <ul className={styles.training__details__exercises}>
-            {exercisesDetails}
+            {exercises.map(exercise => {
+              const { exerciseName, musclePart, sets, id } = exercise;
+              return (
+                <ExerciseDetails
+                  key={id}
+                  id={id}
+                  exerciseName={exerciseName}
+                  musclePart={musclePart}
+                  sets={sets}
+                />
+              );
+            })}
           </ul>
         </div>
       </main>

@@ -11,6 +11,7 @@ import TrainingDetails from './components/Trainings/TrainingDetails';
 import Exercises from './pages/Exercises';
 import NotFound from './pages/NotFound';
 import Trainings from './pages/Trainings';
+import EditTraining from './pages/EditTraining';
 
 let firstRunTrainings = true;
 let firstRunExercises = true;
@@ -51,11 +52,14 @@ function App() {
         <Route path='/' exact>
           <Home />
         </Route>
-        <Route path='/trainings' exact> 
+        <Route path='/trainings' exact>
           <Trainings />
         </Route>
         <Route path='/new-training'>
           <NewTraining />
+        </Route>
+        <Route path='/edit-training'>
+          <EditTraining />
         </Route>
         <Route path='/trainings/:trainingId'>
           <TrainingDetails />

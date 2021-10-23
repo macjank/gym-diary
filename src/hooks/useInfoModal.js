@@ -1,19 +1,28 @@
 import { useState } from 'react';
 import Modal from '../components/UI/Modal';
-import styles from '../styles/UI/ConfirmModal.module.scss';
+import styles from '../styles/UI/InfoModal.module.scss';
+import { FaExclamationCircle } from 'react-icons/fa';
 
-const useInfoModal = ({ info }) => {
+const useInfoModal = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
 
-  const handleOpenModal = () => setIsModalOpen(true);
+  const handleOpenModal = message => {
+    setModalMessage(message);
+    setIsModalOpen(true);
+  };
   const handleCloseModal = () => setIsModalOpen(false);
 
   const modal = (
     <Modal onClose={handleCloseModal}>
       <div className={styles.modalContent}>
-        <h2 className={styles.modalContent__header}>{info}</h2>
+        <div className={styles.modalContent__icon}>
+          <FaExclamationCircle size='60px' />
+        </div>
+
+        <h3>{modalMessage}</h3>
         <div className={styles.modalContent__buttons}>
-          <button onClick={handleCloseModal}>Got it!</button>
+          <button onClick={handleCloseModal}>Mkay...</button>
         </div>
       </div>
     </Modal>

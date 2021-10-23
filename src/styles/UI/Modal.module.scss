@@ -8,11 +8,12 @@
 }
 
 .modal {
+  padding: 1rem;
   background-color: $grey0;
   z-index: 9999;
+  min-width: 100px;
   width: 90vw;
-  max-width: 600px;
-  height: 400px;
+  max-width: 700px;
   position: fixed;
   top: 50%;
   left: 50%;

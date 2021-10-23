@@ -14,7 +14,9 @@ const TrainingsList = ({ numOfTrainings }) => {
     );
   }
 
-  const trainingsToShow = trainings.slice(numOfTrainings);
+  //first slice makes a copy, then we reverse the array
+  //and the second slice takes first 3 elements
+  const trainingsToShow = trainings.slice().reverse().slice(0, numOfTrainings);
 
   return (
     <ul>
