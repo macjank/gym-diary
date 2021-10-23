@@ -38,7 +38,7 @@ const trainingsBaseSlice = createSlice({
       state.isLoading = action.payload;
     },
     setIsError(state, action) {
-      state.isError = action.isError;
+      state.isError = action.payload;
     },
   },
 });

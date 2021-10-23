@@ -1,5 +1,5 @@
 const checkValidityName = value => {
-  return value !== '';
+  return value.trim() !== '';
 };
 
 export default checkValidityName;

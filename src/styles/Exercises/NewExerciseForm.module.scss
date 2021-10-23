@@ -1,16 +1,18 @@
 @import '../variables';
 
 .form {
-
-
   text-align: center;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
 
-  input {
+  &__error {
+    border: 2px solid rgb(219, 0, 0);
+    background: rgb(255, 201, 195);
+  }
 
+  input {
     width: 100%;
     height: 3rem;
   }
@@ -31,5 +33,11 @@
     &:hover {
       background: linear-gradient(to bottom, $blue2 5%, $blue4 100%);
     }
+  }
+
+  &__info {
+    margin-bottom: 1rem;
+    color: rgb(219, 0, 0);
+    font-weight: 400;
   }
 }

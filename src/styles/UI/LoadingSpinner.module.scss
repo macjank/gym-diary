@@ -1,5 +1,13 @@
 @import '../variables';
 
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin: 10rem 0;
+}
+
 .loading {
   display: inline-block;
   position: relative;

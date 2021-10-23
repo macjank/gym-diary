@@ -1,34 +1,29 @@
 import React, { useState } from 'react';
-import Header from '../Header/Header';
-//import { useState } from 'react/cjs/react.development';
-import Nav from '../Header/Nav';
+import Nav from '../Nav/Nav';
+import Sidebar from '../Nav/Sidebar';
 import styles from '../../styles/UI/Layout.module.scss';
 
 const Layout = ({ children }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const handleOpenMenu = () => {
-    setIsMenuOpen(true);
+  const handleOpenSidebar = () => {
+    setIsSidebarOpen(true);
   };
-  const handleCloseMenu = () => {
-    setIsMenuOpen(false);
+  const handleCloseSidebar = () => {
+    setIsSidebarOpen(false);
   };
-
-  const content = isMenuOpen ? (
-    <Nav onSelectLink={handleCloseMenu} />
-  ) : (
-    children
-  );
 
   return (
     <div className={styles.layout}>
-      <Header
-        isMenuOpen={isMenuOpen}
-        onOpenMenu={handleOpenMenu}
-        onCloseMenu={handleCloseMenu}
+      <Nav
+        isSidebarOpen={isSidebarOpen}
+        onOpenSidebar={handleOpenSidebar}
+        onCloseSidebar={handleCloseSidebar}
       />
 
-      {content}
+      <Sidebar isOpen={isSidebarOpen} onSelectLink={handleCloseSidebar} />
+
+      {children}
     </div>
   );
 };

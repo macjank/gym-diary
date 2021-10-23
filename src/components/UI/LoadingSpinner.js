@@ -3,15 +3,17 @@ import styles from '../../styles/UI/LoadingSpinner.module.scss';
 
 const LoadingSpinner = () => {
   return (
-    <div className={styles.loading}>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
+    <div className={styles.container}>
+      <div className={styles.loading}>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
     </div>
   );
 };

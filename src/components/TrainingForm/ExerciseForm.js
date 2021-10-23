@@ -8,9 +8,7 @@ import { trainingFormActions } from '../../store/trainingForm-slice';
 import { FaTimes } from 'react-icons/fa';
 
 const ExerciseForm = ({ id, index }) => {
-  const { exercises, isValidationError } = useSelector(
-    state => state.trainingForm
-  );
+  const { exercises, formError } = useSelector(state => state.trainingForm);
   const exerciseBase = useSelector(state => state.exercisesBase.exercises);
   const dispatch = useDispatch();
 
@@ -29,8 +27,10 @@ const ExerciseForm = ({ id, index }) => {
   const [isMuscleTouched, setIsMuscleTouched] = useState(false);
   const [isExerciseTouched, setIsExerciseTouched] = useState(false);
 
-  const isMuscleNOK = selectedMusclePart === '---' && isMuscleTouched;
-  const isExerciseNOK = selectedExercise === '---' && isExerciseTouched;
+  const isMuscleNOK =
+    selectedMusclePart === '---' && isMuscleTouched && formError.isError;
+  const isExerciseNOK =
+    selectedExercise === '---' && isExerciseTouched && formError.isError;
 
   //these variables are here to dynamically change options in the input fields
   const possibleMuscleParts = exerciseBase.map(item => item.musclePart);
@@ -60,11 +60,11 @@ const ExerciseForm = ({ id, index }) => {
   }, [id, selectedMusclePart, selectedExercise, dispatch]);
 
   useEffect(() => {
-    if (isValidationError) {
+    if (formError.isError) {
       setIsMuscleTouched(true);
       setIsExerciseTouched(true);
     }
-  }, [isValidationError]);
+  }, [formError.isError]);
 
   const handleChangeMusclePart = e => {
     setSelectedMusclePart(e.target.value);
@@ -75,12 +75,10 @@ const ExerciseForm = ({ id, index }) => {
   };
 
   const handleAddNewSetForm = () => {
-    //onAddBlankSetForm(id);
     dispatch(trainingFormActions.addBlankSetForm(id));
   };
 
   const handleRemoveExercise = () => {
-    //onRemoveExerciseForm(id);
     dispatch(trainingFormActions.removeExercise(id));
   };
 
@@ -96,19 +94,19 @@ const ExerciseForm = ({ id, index }) => {
     <div className={styles.exerciseForm}>
       <div className={styles.exerciseForm__title}>
         <h3>Exercise {index + 1}</h3>
-        <FaTimes size='30px' onClick={handleRemoveExercise} />
+        <FaTimes size="30px" onClick={handleRemoveExercise} />
       </div>
       <div className={styles.exerciseForm__muscle}>
         <div className={muscleClasses}>
-          <label htmlFor='muscle'>Muscle part:</label>
+          <label htmlFor="muscle">Muscle part:</label>
           <select
-            name='muscle'
-            id='muscle'
+            name="muscle"
+            id="muscle"
             value={selectedMusclePart}
             onChange={handleChangeMusclePart}
             required
           >
-            <option value='---' disabled>
+            <option value="---" disabled>
               ---
             </option>
             {possibleMuscleParts.map((musclePart, index) => (
@@ -119,15 +117,15 @@ const ExerciseForm = ({ id, index }) => {
           </select>
         </div>
         <div className={exerciseClasses}>
-          <label htmlFor='exerciseName'>Exercise name:</label>
+          <label htmlFor="exerciseName">Exercise name:</label>
           <select
-            name='exerciseName'
-            id='exerciseName'
+            name="exerciseName"
+            id="exerciseName"
             value={selectedExercise}
             onChange={handleChangeExercise}
             required
           >
-            <option value='---' disabled>
+            <option value="---" disabled>
               ---
             </option>
             {possibleExercises.map((exercise, index) => (
@@ -142,7 +140,7 @@ const ExerciseForm = ({ id, index }) => {
       {setsForms}
 
       <div className={styles.btnContainer}>
-        <button type='button' onClick={handleAddNewSetForm}>
+        <button type="button" onClick={handleAddNewSetForm}>
           Add set
         </button>
       </div>

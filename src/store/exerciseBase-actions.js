@@ -5,6 +5,8 @@ const URL =
 
 export const getExercises = () => {
   return async dispatch => {
+    dispatch(exercisesBaseActions.setIsLoading(true));
+
     const sendRequest = async () => {
       const response = await fetch(URL);
 
@@ -18,8 +20,12 @@ export const getExercises = () => {
     };
 
     try {
-      sendRequest();
+      await sendRequest();
+      dispatch(exercisesBaseActions.setIsError(false));
+      dispatch(exercisesBaseActions.setIsLoading(false));
     } catch (error) {
+      dispatch(exercisesBaseActions.setIsError(true));
+      dispatch(exercisesBaseActions.setIsLoading(false));
       console.log(error);
     }
   };

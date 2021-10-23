@@ -1,19 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import SingleTrainingPreview from './SingleTrainingPreview';
-import styles from '../../styles/Trainings/TrainingsPreview.module.scss';
-import LoadingSpinner from '../UI/LoadingSpinner';
+import styles from '../../styles/Trainings/TrainingsList.module.scss';
 
-const TrainingsPreview = () => {
-  const { trainings, isLoading } = useSelector(state => state.trainingsBase);
-
-  if (isLoading) {
-    return (
-      <main className={styles.loadingContainer}>
-        <LoadingSpinner />
-      </main>
-    );
-  }
+const TrainingsList = ({ numOfTrainings }) => {
+  const { trainings } = useSelector(state => state.trainingsBase);
 
   if (trainings.length === 0) {
     return (
@@ -23,9 +14,13 @@ const TrainingsPreview = () => {
     );
   }
 
+  //first slice makes a copy, then we reverse the array
+  //and the second slice takes first 3 elements
+  const trainingsToShow = trainings.slice().reverse().slice(0, numOfTrainings);
+
   return (
     <ul>
-      {trainings.map(training => {
+      {trainingsToShow.map(training => {
         const { id, date, location } = training;
         return (
           <SingleTrainingPreview
@@ -40,4 +35,4 @@ const TrainingsPreview = () => {
   );
 };
 
-export default TrainingsPreview;
+export default TrainingsList;

@@ -1,0 +1,17 @@
+@import '../variables';
+
+.trainings {
+  text-align: center;
+
+  &__header {
+    font-weight: 300;
+    margin: 2rem 0;
+  }
+
+  &__notification {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - #{$navHeight});
+  }
+}

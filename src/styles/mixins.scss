@@ -1,0 +1,10 @@
+@import './variables';
+
+@mixin button {
+  color: $grey0;
+  background-color: $blue2;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: $primaryFont;
+}

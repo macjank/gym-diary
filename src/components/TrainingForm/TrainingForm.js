@@ -7,21 +7,16 @@ import { trainingFormActions } from '../../store/trainingForm-slice';
 import checkFormValidity from '../../helpers/checkFormValidity';
 import { useHistory } from 'react-router';
 import { trainingsBaseActions } from '../../store/trainingsBase-slice';
-import Modal from '../UI/Modal';
+import useConfirmModal from '../../hooks/useConfirmModal';
+import checkValidityName from '../../helpers/checkValidityName';
+import useInfoModal from '../../hooks/useInfoModal';
 
 const TrainingForm = () => {
   const history = useHistory();
-  const { date, location, id, exercises, isValidationError } = useSelector(
+  const dispatch = useDispatch();
+  const { date, location, id, exercises, formError } = useSelector(
     state => state.trainingForm
   );
-  const dispatch = useDispatch();
-
-  //seting the id of the new form once the component is rendered
-  useEffect(() => {
-    if (!id) {
-      dispatch(trainingFormActions.setId());
-    }
-  }, [dispatch, id]);
 
   //local state managing inputs
   const [selectedDate, setSelectedDate] = useState(date);
@@ -32,27 +27,50 @@ const TrainingForm = () => {
   const [isLocationTouched, setIsLocationTouched] = useState(false);
 
   //variables which are being used for displaying error
-  const isDateNOK = selectedDate === '' && isDateTouched;
-  const isLocationNOK = selectedLocation === '' && isLocationTouched;
+  const isDateNOK =
+    !checkValidityName(selectedDate) && isDateTouched && formError.isError;
+  const isLocationNOK =
+    !checkValidityName(selectedLocation) &&
+    isLocationTouched &&
+    formError.isError;
 
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  //importing modals for clearing the form and showing validation error
+  const {
+    modal: clearModal,
+    onOpenModal: openClearModal,
+    isModalOpen: isClearModalOpen,
+  } = useConfirmModal({
+    question: 'Are you sure you want to clear the form?',
+    onConfirmAction: handleClearForm,
+  });
 
-  //updating the context every time inputs are changed
+  const {
+    modal: infoModal,
+    onOpenModal: openInfoModal,
+    isModalOpen: isInfoModalOpen,
+  } = useInfoModal();
+
+  //updating the context every time inputs are being changed
   useEffect(() => {
     dispatch(trainingFormActions.changeDate(selectedDate));
     dispatch(trainingFormActions.changeLocation(selectedLocation));
   }, [selectedDate, selectedLocation, dispatch]);
 
-  //we take 'hasValidationFailed" from the context. once the 'hasValidationFailed'
+  //we take 'isValidationError" from the context. once the 'isValidationError'
   //changes to true, we deal with our inputs as if they were touched
   useEffect(() => {
-    if (isValidationError) {
+    if (formError.isError) {
       setIsDateTouched(true);
       setIsLocationTouched(true);
     }
-  }, [isValidationError]);
+  }, [formError]);
 
-  //calling context
+  useEffect(() => {
+    dispatch(
+      trainingFormActions.handleFormError({ isError: false, message: '' })
+    );
+  }, [date, location, exercises, dispatch]);
+
   const handleSubmit = e => {
     e.preventDefault();
 
@@ -63,14 +81,15 @@ const TrainingForm = () => {
       exercises,
     };
 
-    const isFormValid = checkFormValidity(data);
-    if (!isFormValid) {
-      dispatch(trainingFormActions.changeValidationError(true));
+    const formValidity = checkFormValidity(data);
+    if (formValidity.isError) {
+      dispatch(trainingFormActions.handleFormError(formValidity));
+      openInfoModal(formValidity.message);
       return;
     }
 
     dispatch(trainingsBaseActions.addTraining(data));
-    history.push('/');
+    history.replace('/');
   };
 
   //updating local state for inputs (date and location)
@@ -89,15 +108,11 @@ const TrainingForm = () => {
     dispatch(trainingFormActions.addBlankExerciseForm());
   };
 
-  const handleClearForm = () => {
+  function handleClearForm() {
     dispatch(trainingFormActions.clearForm());
-    setIsDeleteModalOpen(false);
-  };
-
-  //variable with array of components for exercise forms rendering
-  const exercisesContent = exercises.map((exercise, index) => (
-    <ExerciseForm key={exercise.id} id={exercise.id} index={index} />
-  ));
+    setSelectedDate('');
+    setSelectedLocation('');
+  }
 
   //managing the classes depending on the isSometingNOK for the purpose of the styling
   const dateClasses = isDateNOK
@@ -108,62 +123,47 @@ const TrainingForm = () => {
     ? `${styles.form__generalInfo} ${styles.error}`
     : styles.form__generalInfo;
 
-  const handleOpenDeleteModal = () => setIsDeleteModalOpen(true);
-
-  const handleCloseDeleteModal = () => setIsDeleteModalOpen(false);
-
-  const modal = (
-    <Modal onClose={handleCloseDeleteModal}>
-      <div className={styles.modalContent}>
-        <h2 className={styles.modalContent__header}>
-          Are you sure you want to clear the form?
-        </h2>
-        <div className={styles.modalContent__buttons}>
-          <button onClick={handleCloseDeleteModal}>Not so sure...</button>
-          <button onClick={handleClearForm}>Yes</button>
-        </div>
-      </div>
-    </Modal>
-  );
-
   return (
     <>
-      {isDeleteModalOpen && modal}
+      {isClearModalOpen && clearModal}
+      {isInfoModalOpen && infoModal}
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={dateClasses}>
           <div className={styles.form__generalInfo__date}>
-            <label htmlFor='date'>Date</label>
+            <label htmlFor="date">Date</label>
             <input
-              type='date'
-              id='date'
+              type="date"
+              id="date"
               value={selectedDate}
               onChange={handleChangeDate}
             />
           </div>
           <div className={locationClasses}>
-            <label htmlFor='location'>Location (gym)</label>
+            <label htmlFor="location">Location (gym)</label>
             <input
-              type='text'
-              id='location'
+              type="text"
+              id="location"
               value={selectedLocation}
               onChange={handleChangeLocation}
             />
           </div>
         </div>
 
-        {exercisesContent}
+        {exercises.map((exercise, index) => (
+          <ExerciseForm key={exercise.id} id={exercise.id} index={index} />
+        ))}
 
         <div className={styles.form__btnContainer}>
-          <button type='button' onClick={handleAddExerciseForm}>
+          <button type="button" onClick={handleAddExerciseForm}>
             Add exercise
           </button>
           <button
             className={styles.form__btnContainer__submitBtn}
-            type='submit'
+            type="submit"
           >
-            Submit
+            Save
           </button>
-          <button type='button' onClick={handleOpenDeleteModal}>
+          <button type="button" onClick={openClearModal}>
             Clear all
           </button>
         </div>
