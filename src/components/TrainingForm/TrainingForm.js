@@ -10,6 +10,7 @@ import { trainingsBaseActions } from '../../store/trainingsBase-slice';
 import useConfirmModal from '../../hooks/useConfirmModal';
 import checkValidityName from '../../helpers/checkValidityName';
 import useInfoModal from '../../hooks/useInfoModal';
+import { projectFirestore } from '../../firebase/config';
 
 const TrainingForm = () => {
   const history = useHistory();
@@ -88,8 +89,18 @@ const TrainingForm = () => {
       return;
     }
 
-    dispatch(trainingsBaseActions.addTraining(data));
-    history.replace('/');
+    console.log(data);
+
+    projectFirestore
+      .collection('dupa')
+      .add(data)
+      .then(docRef => {
+        console.log(docRef);
+      })
+      .catch(err => console.log(err));
+
+    //dispatch(trainingsBaseActions.addTraining(data));
+    //history.replace('/');
   };
 
   //updating local state for inputs (date and location)
@@ -130,19 +141,19 @@ const TrainingForm = () => {
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={dateClasses}>
           <div className={styles.form__generalInfo__date}>
-            <label htmlFor="date">Date</label>
+            <label htmlFor='date'>Date</label>
             <input
-              type="date"
-              id="date"
+              type='date'
+              id='date'
               value={selectedDate}
               onChange={handleChangeDate}
             />
           </div>
           <div className={locationClasses}>
-            <label htmlFor="location">Location (gym)</label>
+            <label htmlFor='location'>Location (gym)</label>
             <input
-              type="text"
-              id="location"
+              type='text'
+              id='location'
               value={selectedLocation}
               onChange={handleChangeLocation}
             />
@@ -154,16 +165,16 @@ const TrainingForm = () => {
         ))}
 
         <div className={styles.form__btnContainer}>
-          <button type="button" onClick={handleAddExerciseForm}>
+          <button type='button' onClick={handleAddExerciseForm}>
             Add exercise
           </button>
           <button
             className={styles.form__btnContainer__submitBtn}
-            type="submit"
+            type='submit'
           >
             Save
           </button>
-          <button type="button" onClick={openClearModal}>
+          <button type='button' onClick={openClearModal}>
             Clear all
           </button>
         </div>
