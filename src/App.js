@@ -5,8 +5,6 @@ import NewTraining from './pages/NewTraining';
 import './styles/global.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { getTrainings, sendTrainings } from './store/trainingBase-actions';
-import { getExercises, sendExercises } from './store/exerciseBase-actions';
 import TrainingDetails from './components/Trainings/TrainingDetails';
 import Exercises from './pages/Exercises';
 import NotFound from './pages/NotFound';
@@ -18,16 +16,9 @@ import { projectAuth } from './firebase/config';
 import { authActions } from './store/auth-slice';
 import LoadingSpinner from './components/UI/LoadingSpinner';
 
-let firstRunTrainings = true;
-let firstRunExercises = true;
-
 function App() {
-  //importing state from redux slices
-  const { trainings } = useSelector(state => state.trainingsBase);
-  const { exercises } = useSelector(state => state.exercisesBase);
-  const { user, isAuthReady } = useSelector(state => state.auth);
-
   const dispatch = useDispatch();
+  const { user, isAuthReady } = useSelector(state => state.auth);
 
   //checking the authorization status after first run
   useEffect(() => {
@@ -39,34 +30,11 @@ function App() {
         };
         dispatch(authActions.isAuthReady(dataToSave));
       } else {
-        dispatch(authActions.isAuthReady(user));
+        dispatch(authActions.isAuthReady(null));
       }
       unsub();
     });
   }, [dispatch]);
-
-  //getting trainings from database at the first run
-  useEffect(() => {
-    dispatch(getTrainings());
-    dispatch(getExercises());
-  }, [dispatch]);
-
-  //sending trainings to the db every time they change (except the first run)
-  useEffect(() => {
-    if (firstRunTrainings) {
-      firstRunTrainings = false;
-      return;
-    }
-    dispatch(sendTrainings(trainings));
-  }, [trainings, dispatch]);
-
-  useEffect(() => {
-    if (firstRunExercises) {
-      firstRunExercises = false;
-      return;
-    }
-    dispatch(sendExercises(exercises));
-  }, [exercises, dispatch]);
 
   return (
     <>

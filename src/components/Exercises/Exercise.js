@@ -1,29 +1,36 @@
 import React from 'react';
 import { FaTrashAlt } from 'react-icons/fa';
-import { useDispatch } from 'react-redux';
 import useConfirmModal from '../../hooks/useConfirmModal';
-import { exercisesBaseActions } from '../../store/exercisesBase-slice';
+import useFirestore from '../../hooks/useFirestore';
 import styles from '../../styles/Exercises/Exercise.module.scss';
 
-const Exercise = ({ exercise, musclePart }) => {
-  const dispatch = useDispatch();
-
-  const onDeleteQuestion = 'Are you sure you want to delete this exercise?';
-
-  const handleDeleteExercise = () => {
-    dispatch(exercisesBaseActions.removeExercise({ musclePart, exercise }));
-  };
+const Exercise = ({ exercisesCollection, exerciseName, muscleId }) => {
+  const { overwriteDocument } = useFirestore('exercises');
+  const currentMuscle = exercisesCollection.find(item => item.id === muscleId);
 
   const { modal, isModalOpen, onOpenModal } = useConfirmModal({
-    question: onDeleteQuestion,
+    question: 'Are you sure you want to delete this exercise?',
     onConfirmAction: handleDeleteExercise,
   });
+
+  function handleDeleteExercise() {
+    const newExercises = currentMuscle.muscleExercises.filter(
+      item => item !== exerciseName
+    );
+
+    const newMuscleData = {
+      ...currentMuscle,
+      muscleExercises: newExercises,
+    };
+
+    overwriteDocument(muscleId, newMuscleData);
+  }
 
   return (
     <>
       {isModalOpen && modal}
       <li className={styles.exercise}>
-        <p className={styles.exercise__name}>{exercise}</p>
+        <p className={styles.exercise__name}>{exerciseName}</p>
         <div className={styles.exercise__icon}>
           <FaTrashAlt size='30px' onClick={onOpenModal} />
         </div>

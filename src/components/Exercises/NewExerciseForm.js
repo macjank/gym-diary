@@ -1,33 +1,29 @@
 import React, { useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
 import checkValidityName from '../../helpers/checkValidityName';
-import { exercisesBaseActions } from '../../store/exercisesBase-slice';
+import useFirestore from '../../hooks/useFirestore';
 import styles from '../../styles/Exercises/NewExerciseForm.module.scss';
 
-const NewExerciseForm = ({ musclePart }) => {
-  const dispatch = useDispatch();
-  const newExerciseRef = useRef();
-  const { exercises } = useSelector(state => state.exercisesBase);
-  const exerciseNames =
-    exercises.find(exercise => exercise.musclePart === musclePart).exercises ||
-    [];
+const NewExerciseForm = ({ exercisesCollection, muscleId }) => {
+  const { overwriteDocument } = useFirestore('exercises');
+  const currentMuscle = exercisesCollection.find(item => item.id === muscleId);
 
   const [error, setError] = useState({
     value: false,
     message: '',
   });
 
+  const newExerciseRef = useRef();
+
   const handleSubmit = e => {
     e.preventDefault();
 
-    const exerciseName = newExerciseRef.current.value.trim().toLowerCase();
-    const isExerciseNameValid = checkValidityName(exerciseName);
-    const doesExerciseNameExist = exerciseNames.some(
-      exercise => exercise === exerciseName
+    const newExercise = newExerciseRef.current.value.trim().toLowerCase();
+    const isNewExerciseNameValid = checkValidityName(newExercise);
+    const doesNewExerciseNameExist = currentMuscle.muscleExercises.some(
+      exercise => exercise === newExercise
     );
 
-    if (!isExerciseNameValid) {
+    if (!isNewExerciseNameValid) {
       setError({
         value: true,
         message: 'Please enter something',
@@ -35,17 +31,22 @@ const NewExerciseForm = ({ musclePart }) => {
       return;
     }
 
-    if (doesExerciseNameExist) {
+    if (doesNewExerciseNameExist) {
       setError({
         value: true,
         message: 'That value already exists',
       });
       return;
     }
-  
-    dispatch(
-      exercisesBaseActions.addExerciseToBase({ musclePart, exerciseName })
-    );
+
+    const newMuscleData = {
+      createdAt: currentMuscle.createdAt,
+      muscleName: currentMuscle.muscleName,
+      muscleExercises: [...currentMuscle.muscleExercises, newExercise],
+      uid: currentMuscle.uid,
+    };
+
+    overwriteDocument(muscleId, newMuscleData);
 
     newExerciseRef.current.value = '';
     setError({

@@ -1,14 +1,14 @@
 import React, { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
 import checkValidityName from '../../helpers/checkValidityName';
-import { exercisesBaseActions } from '../../store/exercisesBase-slice';
+import useFirestore from '../../hooks/useFirestore';
 import styles from '../../styles/Exercises/NewMuscleForm.module.scss';
 
-const NewMuscleForm = () => {
-  const dispatch = useDispatch();
+const NewMuscleForm = ({ exercisesCollection }) => {
   const newMuscleRef = useRef();
-  const { exercises } = useSelector(state => state.exercisesBase);
+  const { user } = useSelector(state => state.auth);
+
+  const { addDocument, response } = useFirestore('exercises');
 
   const [error, setError] = useState({
     value: false,
@@ -18,10 +18,10 @@ const NewMuscleForm = () => {
   const handleSubmit = e => {
     e.preventDefault();
 
-    const muscleName = newMuscleRef.current.value.trim().toLowerCase();
-    const isMuscleNameValid = checkValidityName(muscleName);
-    const doesMuscleNameExist = exercises.some(
-      exercise => exercise.musclePart === muscleName
+    const newMuscleName = newMuscleRef.current.value.trim().toLowerCase();
+    const isMuscleNameValid = checkValidityName(newMuscleName);
+    const doesMuscleNameExist = exercisesCollection.some(
+      exercise => exercise.muscleName === newMuscleName
     );
 
     if (!isMuscleNameValid) {
@@ -40,7 +40,11 @@ const NewMuscleForm = () => {
       return;
     }
 
-    dispatch(exercisesBaseActions.addMuscleToBase(muscleName));
+    addDocument({
+      muscleName: newMuscleName,
+      muscleExercises: [],
+      uid: user.uid,
+    });
 
     newMuscleRef.current.value = '';
     setError({

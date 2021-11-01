@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import TrainingForm from '../components/TrainingForm/TrainingForm';
+import useCollection from '../hooks/useCollection';
 import { trainingFormActions } from '../store/trainingForm-slice';
 import styles from '../styles/pages/NewTraining.module.scss';
 
@@ -10,6 +11,13 @@ const NewTraining = () => {
   const { date, location, id, exercises } = useSelector(
     state => state.trainingForm
   );
+  const { user } = useSelector(state => state.auth);
+  //getting the exercises base from firebase
+  const { data: exercisesCollection, error } = useCollection('exercises', [
+    'uid',
+    '==',
+    user.uid,
+  ]);
 
   //id comes in only if the user makes any change in the form
   useEffect(() => {
