@@ -1,7 +1,6 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import SingleTrainingPreview from './SingleTrainingPreview';
-import styles from '../../styles/Trainings/TrainingsList.module.scss';
+//import styles from '../../styles/Trainings/TrainingsList.module.scss';
 
 const TrainingsList = ({ trainings }) => {
   return (

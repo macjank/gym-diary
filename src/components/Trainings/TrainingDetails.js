@@ -1,24 +1,36 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router';
 import styles from '../../styles/Trainings/TrainingDetails.module.scss';
 import LoadingSpinner from '../UI/LoadingSpinner';
+import Error from '../UI/Error';
 import ExerciseDetails from './ExerciseDetails';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 import { trainingFormActions } from '../../store/trainingForm-slice';
 import { trainingsBaseActions } from '../../store/trainingsBase-slice';
-import NotFound from '../../pages/NotFound';
 import useConfirmModal from '../../hooks/useConfirmModal';
 import useTwoActionsModal from '../../hooks/useTwoActionsModal';
+import useFirestore from '../../hooks/useFirestore';
+import { useSelector } from 'react-redux';
 
 const TrainingDetails = () => {
   const { trainingId } = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
+  const { isStarted } = useSelector(state => state.trainingForm);
 
-  const { trainings, isLoading } = useSelector(state => state.trainingsBase);
-  const { id } = useSelector(state => state.trainingForm);
+  const {
+    response: training,
+    getDocument,
+    deleteDocument,
+  } = useFirestore('trainings');
+
+  useEffect(() => {
+    getDocument(trainingId);
+  }, []);
+
+  // const { trainings, error } = useSelector(state => state.trainingsBase);
+  // const { id } = useSelector(state => state.trainingForm);
 
   const {
     modal: deleteModal,
@@ -42,17 +54,15 @@ const TrainingDetails = () => {
     confirmBtnText: 'Discard this data and let me edit this training',
   });
 
-  if (isLoading) {
+  if (training.error) {
+    return <Error info={training.error} />;
+  }
+
+  if (!training.document || training.isPending) {
     return <LoadingSpinner />;
   }
 
-  if (trainings.every(training => training.id !== trainingId)) {
-    return <NotFound />;
-  }
-
-  const { location, date, exercises } = trainings.find(
-    training => training.id === trainingId
-  );
+  const { location, date, exercises } = training.document;
 
   function handleShowCurrentForm() {
     history.push('/new-training');
@@ -71,16 +81,18 @@ const TrainingDetails = () => {
   }
 
   function handleDeleteTraining() {
+    deleteDocument(trainingId);
+    //dispatch(trainingsBaseActions.removeTraining(trainingId));
     history.replace('/');
-    dispatch(trainingsBaseActions.removeTraining(trainingId));
   }
 
   const handleTryToEdit = () => {
-    if (id === '') {
-      handleEditTraining();
-    } else {
-      openEditionModal();
-    }
+    console.log('to be implemented');
+    // if (!isStarted) {
+    //   handleEditTraining();
+    // } else {
+    //   openEditionModal();
+    // }
   };
 
   return (

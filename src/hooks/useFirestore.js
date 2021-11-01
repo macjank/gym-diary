@@ -12,7 +12,6 @@ const firestoreReducer = (state, action) => {
   switch (action.type) {
     case 'IS_PENDING':
       return {
-        ...state,
         isPending: true,
         error: null,
         success: false,
@@ -20,7 +19,6 @@ const firestoreReducer = (state, action) => {
       };
     case 'ERROR':
       return {
-        ...state,
         document: null,
         error: action.payload,
         isPending: false,
@@ -28,13 +26,18 @@ const firestoreReducer = (state, action) => {
       };
     case 'ADDED_DOCUMENT':
       return {
-        ...state,
         document: action.payload,
         isPending: false,
         error: null,
         success: true,
       };
-
+    case 'RECEIVED_DOCUMENT':
+      return {
+        document: action.payload,
+        isPending: false,
+        error: null,
+        success: true,
+      };
     default:
       return state;
   }
@@ -81,11 +84,37 @@ const useFirestore = collection => {
     }
   };
 
+  const getDocument = async id => {
+    dispatch({ type: 'IS_PENDING' });
+
+    try {
+      const receivedDoc = await ref.doc(id).get();
+
+      if (!receivedDoc.exists) {
+        throw new Error('Document with this ID does not exist.');
+      }
+
+      if (!isCancelled) {
+        dispatch({ type: 'RECEIVED_DOCUMENT', payload: receivedDoc.data() });
+      }
+    } catch (error) {
+      if (!isCancelled) {
+        dispatch({ type: 'ERROR', payload: error.message });
+      }
+    }
+  };
+
   useEffect(() => {
     return () => setIsCancelled(true);
   }, []);
 
-  return { addDocument, deleteDocument, overwriteDocument, response };
+  return {
+    addDocument,
+    deleteDocument,
+    overwriteDocument,
+    getDocument,
+    response,
+  };
 };
 
 export default useFirestore;
