@@ -11,10 +11,10 @@ import checkValidityName from '../../helpers/checkValidityName';
 import useInfoModal from '../../hooks/useInfoModal';
 import useFirestore from '../../hooks/useFirestore';
 
-const TrainingForm = () => {
+const TrainingForm = ({ exercisesCollection }) => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { date, location, id, exercises, formError } = useSelector(
+  const { date, location, exercises, formError } = useSelector(
     state => state.trainingForm
   );
   const { user } = useSelector(state => state.auth);
@@ -172,7 +172,12 @@ const TrainingForm = () => {
         </div>
 
         {exercises.map((exercise, index) => (
-          <ExerciseForm key={exercise.id} id={exercise.id} index={index} />
+          <ExerciseForm
+            key={exercise.id}
+            id={exercise.id}
+            index={index}
+            exercisesCollection={exercisesCollection}
+          />
         ))}
 
         <div className={styles.form__btnContainer}>

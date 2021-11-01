@@ -7,14 +7,12 @@ import { useDispatch } from 'react-redux';
 import { trainingFormActions } from '../../store/trainingForm-slice';
 import { FaTimes } from 'react-icons/fa';
 
-const ExerciseForm = ({ id, index }) => {
+const ExerciseForm = ({ exercisesCollection, id, index }) => {
   const { exercises, formError } = useSelector(state => state.trainingForm);
-  const exerciseBase = useSelector(state => state.exercisesBase.exercises);
   const dispatch = useDispatch();
 
-  const sets = exercises.find(item => item.id === id).sets;
-
   const currentExercise = exercises.find(exercise => exercise.id === id);
+  const sets = currentExercise.sets;
 
   //state for current inputs values
   const [selectedMusclePart, setSelectedMusclePart] = useState(
@@ -33,12 +31,14 @@ const ExerciseForm = ({ id, index }) => {
     selectedExercise === '---' && isExerciseTouched && formError.isError;
 
   //these variables are here to dynamically change options in the input fields
-  const possibleMuscleParts = exerciseBase.map(item => item.musclePart);
+  const possibleMuscleParts = exercisesCollection.map(item => item.muscleName);
   const possibleExercises = [];
 
-  exerciseBase.forEach(item => {
-    if (item.musclePart === selectedMusclePart) {
-      item.exercises.forEach(exercise => possibleExercises.push(exercise));
+  exercisesCollection.forEach(item => {
+    if (item.muscleName === selectedMusclePart) {
+      item.muscleExercises.forEach(exercise =>
+        possibleExercises.push(exercise)
+      );
     } else {
       return;
     }
@@ -94,19 +94,19 @@ const ExerciseForm = ({ id, index }) => {
     <div className={styles.exerciseForm}>
       <div className={styles.exerciseForm__title}>
         <h3>Exercise {index + 1}</h3>
-        <FaTimes size="30px" onClick={handleRemoveExercise} />
+        <FaTimes size='30px' onClick={handleRemoveExercise} />
       </div>
       <div className={styles.exerciseForm__muscle}>
         <div className={muscleClasses}>
-          <label htmlFor="muscle">Muscle part:</label>
+          <label htmlFor='muscle'>Muscle part:</label>
           <select
-            name="muscle"
-            id="muscle"
+            name='muscle'
+            id='muscle'
             value={selectedMusclePart}
             onChange={handleChangeMusclePart}
             required
           >
-            <option value="---" disabled>
+            <option value='---' disabled>
               ---
             </option>
             {possibleMuscleParts.map((musclePart, index) => (
@@ -117,15 +117,15 @@ const ExerciseForm = ({ id, index }) => {
           </select>
         </div>
         <div className={exerciseClasses}>
-          <label htmlFor="exerciseName">Exercise name:</label>
+          <label htmlFor='exerciseName'>Exercise name:</label>
           <select
-            name="exerciseName"
-            id="exerciseName"
+            name='exerciseName'
+            id='exerciseName'
             value={selectedExercise}
             onChange={handleChangeExercise}
             required
           >
-            <option value="---" disabled>
+            <option value='---' disabled>
               ---
             </option>
             {possibleExercises.map((exercise, index) => (
@@ -140,7 +140,7 @@ const ExerciseForm = ({ id, index }) => {
       {setsForms}
 
       <div className={styles.btnContainer}>
-        <button type="button" onClick={handleAddNewSetForm}>
+        <button type='button' onClick={handleAddNewSetForm}>
           Add set
         </button>
       </div>

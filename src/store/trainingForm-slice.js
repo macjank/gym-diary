@@ -9,12 +9,16 @@ const initialState = {
     isError: false,
     message: '',
   },
+  isStarted: false,
 };
 
 const trainingFormSlice = createSlice({
   name: 'trainingForm',
   initialState,
   reducers: {
+    startForm(state) {
+      state.isStarted = true;
+    },
     setId(state) {
       state.id = Date.now().toString();
     },
