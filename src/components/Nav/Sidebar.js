@@ -1,14 +1,45 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
+import useLogout from '../../hooks/useLogout';
 import styles from '../../styles/Nav/Sidebar.module.scss';
 
 const Sidebar = ({ isOpen, onSelectLink }) => {
+  const history = useHistory();
+  const { user } = useSelector(state => state.auth);
+
   const sidebarClasses = isOpen
     ? styles.sidebar
     : `${styles.sidebar} ${styles.hidden}`;
 
+  const { logout } = useLogout();
+
+  const handleLogout = () => {
+    logout();
+    onSelectLink();
+    history.replace('/');
+  };
+
+  if (!user) {
+    return (
+      <ul className={sidebarClasses}>
+        <li>
+          <Link onClick={onSelectLink} to='/login'>
+            Login
+          </Link>
+        </li>
+        <li>
+          <Link onClick={onSelectLink} to='/signup'>
+            Signup
+          </Link>
+        </li>
+      </ul>
+    );
+  }
+
   return (
     <ul className={sidebarClasses}>
+      {user.displayName && <h2>You are logged in as {user.displayName}</h2>}
       <li>
         <Link onClick={onSelectLink} to='/'>
           Home
@@ -28,6 +59,9 @@ const Sidebar = ({ isOpen, onSelectLink }) => {
         <Link onClick={onSelectLink} to='/exercises'>
           Exercises
         </Link>
+      </li>
+      <li onClick={handleLogout}>
+        <p>Logout</p>
       </li>
     </ul>
   );

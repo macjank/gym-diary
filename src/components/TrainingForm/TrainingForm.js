@@ -6,17 +6,19 @@ import ExerciseForm from './ExerciseForm';
 import { trainingFormActions } from '../../store/trainingForm-slice';
 import checkFormValidity from '../../helpers/checkFormValidity';
 import { useHistory } from 'react-router';
-import { trainingsBaseActions } from '../../store/trainingsBase-slice';
 import useConfirmModal from '../../hooks/useConfirmModal';
 import checkValidityName from '../../helpers/checkValidityName';
 import useInfoModal from '../../hooks/useInfoModal';
+import useFirestore from '../../hooks/useFirestore';
 
-const TrainingForm = () => {
+const TrainingForm = ({ exercisesCollection, onSubmitToFirebase }) => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { date, location, id, exercises, formError } = useSelector(
+  const { date, location, exercises, formError } = useSelector(
     state => state.trainingForm
   );
+  const { user } = useSelector(state => state.auth);
+  const { response } = useFirestore('trainings');
 
   //local state managing inputs
   const [selectedDate, setSelectedDate] = useState(date);
@@ -45,9 +47,9 @@ const TrainingForm = () => {
   });
 
   const {
-    modal: infoModal,
-    onOpenModal: openInfoModal,
-    isModalOpen: isInfoModalOpen,
+    modal: errorModal,
+    onOpenModal: openErrorModal,
+    isModalOpen: isErrorModalOpen,
   } = useInfoModal();
 
   //updating the context every time inputs are being changed
@@ -65,31 +67,52 @@ const TrainingForm = () => {
     }
   }, [formError]);
 
+  //reseting the error state if user changes anything in the form
   useEffect(() => {
     dispatch(
       trainingFormActions.handleFormError({ isError: false, message: '' })
     );
   }, [date, location, exercises, dispatch]);
 
+  //we clear the form and take user to the home page
+  // - only if the data has been succesfully sent to firebase
+  useEffect(() => {
+    if (response.success) {
+      dispatch(trainingFormActions.clearForm());
+      history.push('/');
+    }
+  }, [dispatch, response.success, history]);
+
+  //showing the info modal when sending data to firebase has failed
+  useEffect(() => {
+    if (response.error) {
+      const errorInfo = response.error.message
+        ? response.error.message
+        : 'Sending data has failed';
+      openErrorModal(errorInfo);
+    }
+  }, [dispatch, response.error, openErrorModal]);
+
   const handleSubmit = e => {
     e.preventDefault();
 
     const data = {
+      uid: user.uid,
       date,
       location,
-      id,
       exercises,
     };
 
     const formValidity = checkFormValidity(data);
     if (formValidity.isError) {
       dispatch(trainingFormActions.handleFormError(formValidity));
-      openInfoModal(formValidity.message);
+      openErrorModal(formValidity.message);
       return;
     }
 
-    dispatch(trainingsBaseActions.addTraining(data));
-    history.replace('/');
+    onSubmitToFirebase({ date, location, exercises });
+
+    //addDocument(data);
   };
 
   //updating local state for inputs (date and location)
@@ -126,23 +149,23 @@ const TrainingForm = () => {
   return (
     <>
       {isClearModalOpen && clearModal}
-      {isInfoModalOpen && infoModal}
+      {isErrorModalOpen && errorModal}
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={dateClasses}>
           <div className={styles.form__generalInfo__date}>
-            <label htmlFor="date">Date</label>
+            <label htmlFor='date'>Date</label>
             <input
-              type="date"
-              id="date"
+              type='date'
+              id='date'
               value={selectedDate}
               onChange={handleChangeDate}
             />
           </div>
           <div className={locationClasses}>
-            <label htmlFor="location">Location (gym)</label>
+            <label htmlFor='location'>Location (gym)</label>
             <input
-              type="text"
-              id="location"
+              type='text'
+              id='location'
               value={selectedLocation}
               onChange={handleChangeLocation}
             />
@@ -150,20 +173,25 @@ const TrainingForm = () => {
         </div>
 
         {exercises.map((exercise, index) => (
-          <ExerciseForm key={exercise.id} id={exercise.id} index={index} />
+          <ExerciseForm
+            key={exercise.id}
+            id={exercise.id}
+            index={index}
+            exercisesCollection={exercisesCollection}
+          />
         ))}
 
         <div className={styles.form__btnContainer}>
-          <button type="button" onClick={handleAddExerciseForm}>
+          <button type='button' onClick={handleAddExerciseForm}>
             Add exercise
           </button>
           <button
             className={styles.form__btnContainer__submitBtn}
-            type="submit"
+            type='submit'
           >
             Save
           </button>
-          <button type="button" onClick={openClearModal}>
+          <button type='button' onClick={openClearModal}>
             Clear all
           </button>
         </div>
