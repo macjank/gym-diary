@@ -6,7 +6,7 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
 
-  const { signup, isError, isPending } = useSignup();
+  const { signup } = useSignup();
 
   const handleSubmit = e => {
     e.preventDefault();

@@ -8,7 +8,7 @@ const NewMuscleForm = ({ exercisesCollection }) => {
   const newMuscleRef = useRef();
   const { user } = useSelector(state => state.auth);
 
-  const { addDocument, response } = useFirestore('exercises');
+  const { addDocument } = useFirestore('exercises');
 
   const [error, setError] = useState({
     value: false,

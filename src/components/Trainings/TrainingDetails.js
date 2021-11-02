@@ -7,7 +7,6 @@ import ExerciseDetails from './ExerciseDetails';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 import { trainingFormActions } from '../../store/trainingForm-slice';
-import { trainingsBaseActions } from '../../store/trainingsBase-slice';
 import useConfirmModal from '../../hooks/useConfirmModal';
 import useTwoActionsModal from '../../hooks/useTwoActionsModal';
 import useFirestore from '../../hooks/useFirestore';
@@ -27,7 +26,7 @@ const TrainingDetails = () => {
 
   useEffect(() => {
     getDocument(trainingId);
-  }, []);
+  }, [getDocument, trainingId]);
 
   // const { trainings, error } = useSelector(state => state.trainingsBase);
   // const { id } = useSelector(state => state.trainingForm);

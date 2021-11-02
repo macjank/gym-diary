@@ -18,7 +18,7 @@ const TrainingForm = ({ exercisesCollection, onSubmitToFirebase }) => {
     state => state.trainingForm
   );
   const { user } = useSelector(state => state.auth);
-  const { addDocument, response } = useFirestore('trainings');
+  const { response } = useFirestore('trainings');
 
   //local state managing inputs
   const [selectedDate, setSelectedDate] = useState(date);
@@ -78,11 +78,10 @@ const TrainingForm = ({ exercisesCollection, onSubmitToFirebase }) => {
   // - only if the data has been succesfully sent to firebase
   useEffect(() => {
     if (response.success) {
-      console.log(response);
       dispatch(trainingFormActions.clearForm());
       history.push('/');
     }
-  }, [dispatch, response.success]);
+  }, [dispatch, response.success, history]);
 
   //showing the info modal when sending data to firebase has failed
   useEffect(() => {
@@ -92,7 +91,7 @@ const TrainingForm = ({ exercisesCollection, onSubmitToFirebase }) => {
         : 'Sending data has failed';
       openErrorModal(errorInfo);
     }
-  }, [dispatch, response.error]);
+  }, [dispatch, response.error, openErrorModal]);
 
   const handleSubmit = e => {
     e.preventDefault();

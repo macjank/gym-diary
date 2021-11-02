@@ -31,7 +31,7 @@ const NewTraining = () => {
       dispatch(trainingFormActions.clearForm());
       history.push('/');
     }
-  }, [response.success]);
+  }, [response.success, dispatch, history]);
 
   // //id comes in only if the user makes any change in the form
   // useEffect(() => {
@@ -52,7 +52,7 @@ const NewTraining = () => {
     if (!isStarted) {
       dispatch(trainingFormActions.startForm());
     }
-  }, [date, location, exercises]);
+  }, [date, location, exercises, dispatch, isStarted]);
 
   if (error) return <Error />;
   if (!exercisesCollection) {

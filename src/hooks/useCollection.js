@@ -47,7 +47,7 @@ const useCollection = (collection, _query, _orderBy, limit) => {
     );
 
     return () => unsub();
-  }, [collection, query, orderBy]);
+  }, [collection, query, orderBy, limit]);
 
   return { data, error };
 };
