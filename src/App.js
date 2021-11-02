@@ -52,22 +52,25 @@ function App() {
               {user ? <Redirect to='/' /> : <Login />}
             </Route>
             <Route path='/trainings' exact>
-              <Trainings />
+              {user ? <Trainings /> : <Redirect to='/login' />}
             </Route>
             <Route path='/new-training'>
-              <NewTraining />
+              {user ? <NewTraining /> : <Redirect to='/login' />}
             </Route>
-            <Route path='/edit-training'>
-              <EditTraining />
+            {/* <Route path='/edit-training'>
+              {user ? <EditTraining /> : <Redirect to='/login' />}
+            </Route> */}
+            <Route path='/trainings/:trainingId' exact>
+              {user ? <TrainingDetails /> : <Redirect to='/login' />}
             </Route>
-            <Route path='/trainings/:trainingId'>
-              <TrainingDetails />
+            <Route path='/trainings/:trainingId/edit'>
+              {user ? <EditTraining /> : <Redirect to='/login' />}
             </Route>
             <Route path='/exercises'>
-              <Exercises />
+              {user ? <Exercises /> : <Redirect to='/login' />}
             </Route>
             <Route path='*'>
-              <NotFound />
+              {user ? <NotFound /> : <Redirect to='/login' />}
             </Route>
           </Switch>
         </Layout>

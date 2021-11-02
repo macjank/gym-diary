@@ -7,9 +7,12 @@ import Error from '../components/UI/Error';
 import useCollection from '../hooks/useCollection';
 import { trainingFormActions } from '../store/trainingForm-slice';
 import styles from '../styles/pages/NewTraining.module.scss';
+import useFirestore from '../hooks/useFirestore';
+import { useHistory } from 'react-router';
 
 const NewTraining = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { date, location, isStarted, exercises } = useSelector(
     state => state.trainingForm
   );
@@ -20,6 +23,15 @@ const NewTraining = () => {
     '==',
     user.uid,
   ]);
+
+  const { addDocument, response } = useFirestore('trainings');
+
+  useEffect(() => {
+    if (response.success) {
+      dispatch(trainingFormActions.clearForm());
+      history.push('/');
+    }
+  }, [response.success]);
 
   // //id comes in only if the user makes any change in the form
   // useEffect(() => {
@@ -47,12 +59,24 @@ const NewTraining = () => {
     return <LoadingSpinner />;
   }
 
-  console.log(exercisesCollection);
+  const handleSubmitToFirebase = ({ date, location, exercises }) => {
+    const doc = {
+      uid: user.uid,
+      date,
+      location,
+      exercises,
+    };
+
+    addDocument(doc);
+  };
 
   return (
     <main className={styles.newTraining}>
       <h2>Add new training</h2>
-      <TrainingForm exercisesCollection={exercisesCollection} />
+      <TrainingForm
+        exercisesCollection={exercisesCollection}
+        onSubmitToFirebase={handleSubmitToFirebase}
+      />
     </main>
   );
 };

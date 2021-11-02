@@ -11,7 +11,7 @@ import checkValidityName from '../../helpers/checkValidityName';
 import useInfoModal from '../../hooks/useInfoModal';
 import useFirestore from '../../hooks/useFirestore';
 
-const TrainingForm = ({ exercisesCollection }) => {
+const TrainingForm = ({ exercisesCollection, onSubmitToFirebase }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { date, location, exercises, formError } = useSelector(
@@ -111,7 +111,9 @@ const TrainingForm = ({ exercisesCollection }) => {
       return;
     }
 
-    addDocument(data);
+    onSubmitToFirebase({ date, location, exercises });
+
+    //addDocument(data);
   };
 
   //updating local state for inputs (date and location)

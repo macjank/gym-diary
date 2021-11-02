@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import useLogin from '../hooks/useLogin';
 
 const Login = () => {
@@ -27,6 +28,12 @@ const Login = () => {
         onChange={e => setPassword(e.target.value)}
       />
       <button>Log in</button>
+
+      <div>
+        <Link to='/signup'>
+          <button>No account yet? Sign up!</button>
+        </Link>
+      </div>
     </form>
   );
 };

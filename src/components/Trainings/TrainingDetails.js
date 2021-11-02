@@ -69,12 +69,12 @@ const TrainingDetails = () => {
   }
 
   function handleEditTraining() {
-    history.push('/edit-training');
+    console.log('dupa');
+    history.push(`/trainings/${trainingId}/edit`);
     dispatch(
       trainingFormActions.replaceData({
         date,
         location,
-        id: trainingId,
         exercises,
       })
     );
@@ -87,12 +87,11 @@ const TrainingDetails = () => {
   }
 
   const handleTryToEdit = () => {
-    console.log('to be implemented');
-    // if (!isStarted) {
-    //   handleEditTraining();
-    // } else {
-    //   openEditionModal();
-    // }
+    if (!isStarted) {
+      handleEditTraining();
+    } else {
+      openEditionModal();
+    }
   };
 
   return (

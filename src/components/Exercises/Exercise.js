@@ -19,7 +19,9 @@ const Exercise = ({ exercisesCollection, exerciseName, muscleId }) => {
     );
 
     const newMuscleData = {
-      ...currentMuscle,
+      //...currentMuscle,
+      muscleName: currentMuscle.muscleName,
+      uid: currentMuscle.uid,
       muscleExercises: newExercises,
     };
 

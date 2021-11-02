@@ -10,7 +10,7 @@ const useSignup = () => {
 
   const dispatch = useDispatch();
 
-  const signup = async (email, password) => {
+  const signup = async (email, password, name) => {
     setError(false);
     setIsPending(true);
 
@@ -23,6 +23,8 @@ const useSignup = () => {
       if (!response) {
         throw new Error('Could not sign up');
       }
+
+      await response.user.updateProfile({ displayName: name });
 
       const dataToSave = {
         displayName: response.user.displayName,

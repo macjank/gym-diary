@@ -31,6 +31,20 @@ const firestoreReducer = (state, action) => {
         error: null,
         success: true,
       };
+    case 'DELETED_DOCUMENT':
+      return {
+        document: null,
+        isPending: false,
+        error: null,
+        success: true,
+      };
+    case 'OVERWRITTEN_DOCUMENT':
+      return {
+        document: null,
+        isPending: false,
+        error: null,
+        success: true,
+      };
     case 'RECEIVED_DOCUMENT':
       return {
         document: action.payload,
@@ -69,18 +83,26 @@ const useFirestore = collection => {
   };
 
   const deleteDocument = async id => {
+    dispatch({ type: 'IS_PENDING' });
+
     try {
       await ref.doc(id).delete();
+      dispatch({ type: 'DELETED_DOCUMENT' });
     } catch (error) {
-      console.log(error);
+      dispatch({ type: 'ERROR', payload: error.message });
     }
   };
 
   const overwriteDocument = async (id, newDoc) => {
+    dispatch({ type: 'IS_PENDING' });
+
     try {
-      await ref.doc(id).set(newDoc);
+      const createdAt = timestamp.fromDate(new Date());
+      await ref.doc(id).set({ ...newDoc, createdAt });
+      dispatch({ type: 'OVERWRITTEN_DOCUMENT' });
     } catch (error) {
       console.log(error);
+      dispatch({ type: 'ERROR', payload: error.message });
     }
   };
 

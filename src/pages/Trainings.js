@@ -14,11 +14,11 @@ const Trainings = () => {
   const { user } = useSelector(state => state.auth);
 
   //getting the trainings data from firebase
-  const { data: trainings, error } = useCollection('trainings', [
-    'uid',
-    '==',
-    user.uid,
-  ]);
+  const { data: trainings, error } = useCollection(
+    'trainings',
+    ['uid', '==', user.uid],
+    ['date', 'desc']
+  );
 
   useEffect(() => {
     if (error) {

@@ -9,25 +9,20 @@ import useCollection from '../hooks/useCollection';
 
 const Home = () => {
   const { user } = useSelector(state => state.auth);
+  const numOfTrainingsToShow = 3;
 
   //getting the trainings data from firebase
-  const { data: trainings, error } = useCollection('trainings', [
-    'uid',
-    '==',
-    user.uid,
-  ]);
+  //ordering by date 
+  //limit: numOfTrainingsToShow
+  const { data: trainings, error } = useCollection(
+    'trainings',
+    ['uid', '==', user.uid],
+    ['date', 'desc'],
+    numOfTrainingsToShow
+  );
 
   if (error) return <Error />;
   if (!trainings) return <LoadingSpinner />;
-
-  const numOfTrainingsToShow = 3;
-
-  //first slice makes a copy, then we reverse the array
-  //and the second slice takes first 3 elements
-  const trainingsToShow = trainings
-    .slice()
-    .reverse()
-    .slice(0, numOfTrainingsToShow);
 
   let content;
 
@@ -41,7 +36,7 @@ const Home = () => {
     content = (
       <>
         <h2 className={styles.home__title}>Last trainings</h2>
-        <TrainingsList trainings={trainingsToShow} />
+        <TrainingsList trainings={trainings} />
         <Link to='/trainings'>
           <button className={styles.btnMore}>Show more</button>
         </Link>

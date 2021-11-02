@@ -3,17 +3,26 @@ import { useRef } from 'react';
 import { useEffect } from 'react';
 import { projectFirestore } from '../firebase/config';
 
-const useCollection = (collection, _query) => {
+const useCollection = (collection, _query, _orderBy, limit) => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
   const query = useRef(_query).current;
+  const orderBy = useRef(_orderBy).current;
 
   useEffect(() => {
     let ref = projectFirestore.collection(collection);
 
     if (query) {
       ref = ref.where(...query);
+    }
+
+    if (orderBy) {
+      ref = ref.orderBy(...orderBy);
+    }
+
+    if (limit) {
+      ref = ref.limit(limit);
     }
 
     const unsub = ref.onSnapshot(
@@ -38,7 +47,7 @@ const useCollection = (collection, _query) => {
     );
 
     return () => unsub();
-  }, [collection, query]);
+  }, [collection, query, orderBy]);
 
   return { data, error };
 };

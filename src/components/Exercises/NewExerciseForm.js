@@ -40,7 +40,7 @@ const NewExerciseForm = ({ exercisesCollection, muscleId }) => {
     }
 
     const newMuscleData = {
-      createdAt: currentMuscle.createdAt,
+      //createdAt: currentMuscle.createdAt,
       muscleName: currentMuscle.muscleName,
       muscleExercises: [...currentMuscle.muscleExercises, newExercise],
       uid: currentMuscle.uid,
