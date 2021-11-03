@@ -2,10 +2,16 @@
 
 .trainings {
   text-align: center;
+  padding: 1em;
 
   &__header {
-    font-weight: 300;
-    margin: 2rem 0;
+    margin: 1em auto;
+    padding-bottom: 2rem;
+    font-weight: 400;
+    color: $blue4;
+    border-bottom: 1px solid $grey2;
+
+    max-width: $maxContentWidth;
   }
 
   &__notification {
@@ -13,5 +19,15 @@
     justify-content: center;
     align-items: center;
     min-height: calc(100vh - #{$navHeight});
+  }
+}
+
+.empty {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  &__text {
+    font-weight: 300;
   }
 }

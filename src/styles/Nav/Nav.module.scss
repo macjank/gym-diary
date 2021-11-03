@@ -9,6 +9,11 @@
   color: $grey1;
   padding: 1rem;
 
+  &.fixed {
+    position: fixed;
+    width: 100%;
+  }
+
   h1 {
     font-weight: 500;
 

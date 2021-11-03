@@ -6,7 +6,11 @@
   align-items: center;
 
   &__name {
-    text-transform: capitalize;
+    color: $blue4;
+
+    &:first-letter {
+      text-transform: capitalize;
+    }
   }
 
   &__icon {
@@ -14,6 +18,7 @@
     justify-content: center;
     align-items: center;
     height: 100%;
+    color: $blue4;
   }
 }
 

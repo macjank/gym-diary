@@ -39,7 +39,11 @@ const Sidebar = ({ isOpen, onSelectLink }) => {
 
   return (
     <ul className={sidebarClasses}>
-      {user.displayName && <h2>You are logged in as {user.displayName}</h2>}
+      {user.displayName && (
+        <div className={styles.sidebar__header}>
+          You are logged in as {user.displayName}
+        </div>
+      )}
       <li>
         <Link onClick={onSelectLink} to='/'>
           Home
@@ -60,9 +64,7 @@ const Sidebar = ({ isOpen, onSelectLink }) => {
           Exercises
         </Link>
       </li>
-      <li onClick={handleLogout}>
-        <p>Logout</p>
-      </li>
+      <li onClick={handleLogout}>Logout</li>
     </ul>
   );
 };

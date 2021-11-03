@@ -12,7 +12,7 @@ const Home = () => {
   const numOfTrainingsToShow = 3;
 
   //getting the trainings data from firebase
-  //ordering by date 
+  //ordering by date
   //limit: numOfTrainingsToShow
   const { data: trainings, error } = useCollection(
     'trainings',
@@ -29,13 +29,15 @@ const Home = () => {
   if (trainings.length === 0) {
     content = (
       <div className={styles.empty}>
-        <h2>The list is empty. Add some trainings</h2>
+        <h2 className={styles.empty__text}>
+          The list is empty. Add some trainings
+        </h2>
       </div>
     );
   } else {
     content = (
       <>
-        <h2 className={styles.home__title}>Last trainings</h2>
+        <h1 className={styles.home__title}>Last trainings</h1>
         <TrainingsList trainings={trainings} />
         <Link to='/trainings'>
           <button className={styles.btnMore}>Show more</button>
@@ -47,12 +49,10 @@ const Home = () => {
   return (
     <>
       <main className={styles.home}>
-        <section className={styles.home__content}>
-          {content}
-          <Link to='/new-training'>
-            <button className={styles.btnAdd}>Add new training</button>
-          </Link>
-        </section>
+        <section className={styles.home__content}>{content}</section>
+        <Link to='/new-training'>
+          <button className={styles.btnAdd}>Add new training</button>
+        </Link>
       </main>
     </>
   );

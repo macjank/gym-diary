@@ -1,0 +1,42 @@
+@import '../variables';
+@import '../mixins.scss';
+
+.form {
+  padding: 1em;
+  width: 90vw;
+  max-width: 700px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  button {
+    font-size: 1em;
+  }
+
+  input,
+  &__btnLogin,
+  a {
+    width: 90%;
+  }
+
+  &__btnLogin,
+  &__btnSignup {
+    @include button;
+  }
+
+  &__btnSignup {
+    margin-top: 2em;
+    width: 100%;
+  }
+
+  * {
+    padding: 1em 0;
+  }
+}

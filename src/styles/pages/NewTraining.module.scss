@@ -1,4 +1,35 @@
+@import '../mixins.scss';
+
 .newTraining {
-    padding-top: 1rem;
-    text-align: center;
+  padding: 1em;
+  text-align: center;
+  max-width: $maxContentWidth;
+  margin: auto;
+
+  &__header {
+    margin: 1em 0;
+    padding-bottom: 2rem;
+    font-weight: 400;
+    color: $blue4;
+    border-bottom: 1px solid $grey2;
+  }
+}
+
+.empty {
+  position: fixed;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  &__header {
+    font-weight: 300;
+  }
+
+  &__exercisesBtn {
+    @include button;
+
+    padding: 1em;
+    font-size: 1.2em;
+    margin-top: 2em;
+  }
 }

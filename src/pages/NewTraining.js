@@ -9,6 +9,7 @@ import { trainingFormActions } from '../store/trainingForm-slice';
 import styles from '../styles/pages/NewTraining.module.scss';
 import useFirestore from '../hooks/useFirestore';
 import { useHistory } from 'react-router';
+import { Link } from 'react-router-dom';
 
 const NewTraining = () => {
   const dispatch = useDispatch();
@@ -33,18 +34,6 @@ const NewTraining = () => {
     }
   }, [response.success, dispatch, history]);
 
-  // //id comes in only if the user makes any change in the form
-  // useEffect(() => {
-  //   //thanks to that id is being made only after user enter some data
-  //   //and also we dont make another id after we manually clear the form
-  //   if (date === '' && location === '' && exercises.length === 0) return;
-
-  //   //we dont make new id if there is any
-  //   if (id === '') {
-  //     dispatch(trainingFormActions.setId());
-  //   }
-  // }, [date, location, exercises, dispatch, id]);
-
   //we mark form as "isStarted" when some of the inputs are changed
   useEffect(() => {
     if (date === '' && location === '' && exercises.length === 0) return;
@@ -59,6 +48,8 @@ const NewTraining = () => {
     return <LoadingSpinner />;
   }
 
+  const areThereAnyExercises = exercisesCollection.length !== 0;
+
   const handleSubmitToFirebase = ({ date, location, exercises }) => {
     const doc = {
       uid: user.uid,
@@ -70,21 +61,33 @@ const NewTraining = () => {
     addDocument(doc);
   };
 
-  return (
-    <main className={styles.newTraining}>
-      <h2>Add new training</h2>
-      <TrainingForm
-        exercisesCollection={exercisesCollection}
-        onSubmitToFirebase={handleSubmitToFirebase}
-      />
-    </main>
-  );
+  let content;
+
+  if (!areThereAnyExercises) {
+    content = (
+      <div className={styles.empty}>
+        <h2 className={styles.empty__header}>
+          Your exercises collection is empty <br /> You have to manage it before
+          you add a new training
+        </h2>
+        <Link to='exercises'>
+          <button className={styles.empty__exercisesBtn}>Add exercises</button>
+        </Link>
+      </div>
+    );
+  } else {
+    content = (
+      <>
+        <h1 className={styles.newTraining__header}>Add new training</h1>
+        <TrainingForm
+          exercisesCollection={exercisesCollection}
+          onSubmitToFirebase={handleSubmitToFirebase}
+        />
+      </>
+    );
+  }
+
+  return <main className={styles.newTraining}>{content}</main>;
 };
 
 export default NewTraining;
-
-//opcja 1:
-// --- jeden formularz
-// --- podczas edycji jeśli użytnik chce wyjść, dostaje prompta żeby albo discard albo save changes
-// --- jak jesteśmy w trakcie wprowadzania nowego forma to nie można edytować starego treningu
-// --- const isEditing w trainingFormie. ustawiamy na true jeśli id !== ''

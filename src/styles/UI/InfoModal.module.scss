@@ -3,6 +3,10 @@
 .modalContent {
   text-align: center;
 
+  &__text {
+    font-weight: 400;
+  }
+
   &__icon {
     color: $blue2;
   }
@@ -26,6 +30,6 @@
   }
 
   * {
-      margin: 1em;
+    margin: 1em;
   }
 }

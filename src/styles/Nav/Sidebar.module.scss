@@ -1,21 +1,32 @@
 @import '../variables.scss';
 
-.sidebar {  
+.sidebar {
   position: fixed;
-  height: 100%;
+  top: $navHeight;
+  bottom: 0;
   width: 100%;
   background: $grey0;
-  padding: 1rem;
   z-index: 999;
 
+  overflow-y: scroll;
+
   transition: transform 0.2s ease-in-out;
+
+  &__header {
+    text-align: center;
+    margin: 2em 0;
+    color: $blue5;
+  }
 
   li {
     text-align: center;
     color: $blue5;
-    padding: 2rem;
-    font-size: 2em;
-    border-bottom: 1px solid $blue5;
+    padding: 1.5em;
+    font-size: 1.5em;
+    border-top: 1px solid $blue5;
+
+    max-width: 400px;
+    margin: auto;
   }
 }
 
