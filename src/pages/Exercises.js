@@ -20,24 +20,12 @@ const Exercises = () => {
   if (error) return <Error />;
   if (!exercisesCollection) return <LoadingSpinner />;
 
-  let content;
-
-  if (exercisesCollection.length === 0) {
-    content = (
-      <div className={styles.empty}>
-        <h2>The list is empty. Add some exercises</h2>
-      </div>
-    );
-  } else {
-    content = <ExercisesCollection exercisesCollection={exercisesCollection} />;
-  }
-
   return (
-    <section className={styles.exercises}>
-      <h2 className={styles.exercises__header}>All exercises</h2>
-      {content}
+    <main className={styles.exercises}>
+      <h1 className={styles.exercises__header}>All exercises</h1>
+      <ExercisesCollection exercisesCollection={exercisesCollection} />
       <NewMuscleForm exercisesCollection={exercisesCollection} />
-    </section>
+    </main>
   );
 };
 

@@ -1,11 +1,21 @@
 @import '../variables';
 
 .exercises {
-  padding: 1rem;
+  padding: 1em;
+  max-width: $maxContentWidth;
+  margin: auto;
 
   &__header {
-    margin: 2rem 0;
+    margin: 1em 0;
+    padding-bottom: 2rem;
     text-align: center;
     font-weight: 400;
+    color: $blue4;
+    border-bottom: 1px solid $grey2;
   }
+}
+
+.empty {
+  text-align: center;
+  font-size: 1.5rem;
 }

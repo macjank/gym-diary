@@ -1,23 +1,27 @@
 @import '../variables';
 
 .muscle {
-  padding: 2rem 1rem;
+  padding: 2rem 0;
   border-bottom: 1px solid $blue3;
 
   &__title {
-    margin-bottom: 2rem;
-    position: relative;
+    margin-bottom: 1em;
+    //position: relative;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     &__name {
-      // margin-right: 2rem;
+      margin-right: 2em;
       text-align: center;
       text-transform: capitalize;
+      font-weight: 400;
+      color: $blue4;
     }
 
     &__icon {
-      position: absolute;
-      right: 0;
-      top: 0;
+      color: $blue4;
     }
   }
 

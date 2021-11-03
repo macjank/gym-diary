@@ -37,19 +37,21 @@ const Trainings = () => {
   if (trainings.length === 0) {
     content = (
       <div className={styles.empty}>
-        <h2>The list is empty. Add some trainings</h2>
+        <h2 className={styles.empty__text}>
+          The list is empty. Add some trainings
+        </h2>
       </div>
     );
   } else {
-    content = <TrainingsList trainings={trainings} />;
+    content = (
+      <>
+        <h1 className={styles.trainings__header}>All trainings</h1>
+        <TrainingsList trainings={trainings} />;
+      </>
+    );
   }
 
-  return (
-    <main className={styles.trainings}>
-      <h2 className={styles.trainings__header}>All trainings</h2>
-      {content}
-    </main>
-  );
+  return <main className={styles.trainings}>{content}</main>;
 };
 
 export default Trainings;

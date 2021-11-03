@@ -1,5 +1,6 @@
 import React from 'react';
 import Exercise from './Exercise';
+import styles from '../../styles/Exercises/MuscleExercises.module.scss';
 
 const MuscleExercises = ({
   exercisesCollection,
@@ -7,7 +8,7 @@ const MuscleExercises = ({
   muscleId,
 }) => {
   return (
-    <ul>
+    <ul className={styles.muscles}>
       {muscleExercises.map((exercise, index) => (
         <Exercise
           key={index}

@@ -126,6 +126,26 @@ const useFirestore = collection => {
     }
   };
 
+  // const getDocument = async id => {
+  //   dispatch({ type: 'IS_PENDING' });
+
+  //   try {
+  //     const receivedDoc = await ref.doc(id).get();
+
+  //     if (!receivedDoc.exists) {
+  //       throw new Error('Document with this ID does not exist.');
+  //     }
+
+  //     if (!isCancelled) {
+  //       dispatch({ type: 'RECEIVED_DOCUMENT', payload: receivedDoc.data() });
+  //     }
+  //   } catch (error) {
+  //     if (!isCancelled) {
+  //       dispatch({ type: 'ERROR', payload: error.message });
+  //     }
+  //   }
+  // };
+
   useEffect(() => {
     return () => setIsCancelled(true);
   }, []);

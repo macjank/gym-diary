@@ -3,11 +3,12 @@
 .setForm {
   margin: 2.5rem 0;
 
-
   &__title {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 1em;
+
     h3 {
       margin-right: 1rem;
       font-weight: 500;
@@ -15,20 +16,28 @@
   }
 
   &__inputs {
-    max-width: 100%;
-
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
+
+    &__weight,
+    &__reps {
+      max-width: 50%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
 
     label {
       font-size: 1.2rem;
+      margin-bottom: 0.5em;
     }
 
     input {
-      height: 3rem;
+      height: 3em;
       font-size: 1rem;
-      max-width: 60%;
+      max-width: 80%;
     }
   }
 }
@@ -36,5 +45,17 @@
 .error {
   input {
     background-color: salmon;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .setForm {
+    &__inputs {
+      flex-direction: column;
+
+      &__weight {
+        margin-bottom: 1em;
+      }
+    }
   }
 }

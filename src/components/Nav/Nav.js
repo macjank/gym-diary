@@ -10,8 +10,12 @@ const Nav = ({ isSidebarOpen, onOpenSidebar, onCloseSidebar }) => {
     <FaBars size='3em' onClick={onOpenSidebar} />
   );
 
+  const navClasses = isSidebarOpen
+    ? `${styles.nav} ${styles.fixed}`
+    : styles.nav;
+
   return (
-    <nav className={styles.nav}>
+    <nav className={navClasses}>
       <Link to='/' onClick={onCloseSidebar}>
         <div>
           <h1>GymDiary</h1>

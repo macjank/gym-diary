@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
 import styles from '../../styles/Trainings/TrainingDetails.module.scss';
 import LoadingSpinner from '../UI/LoadingSpinner';
@@ -18,6 +18,9 @@ const TrainingDetails = () => {
   const dispatch = useDispatch();
   const { isStarted } = useSelector(state => state.trainingForm);
 
+  //thanks to this I can avoid infinite loop caused by useEffect
+  const [isFirstRun, setIsFirstRun] = useState(true);
+
   const {
     response: training,
     getDocument,
@@ -25,8 +28,11 @@ const TrainingDetails = () => {
   } = useFirestore('trainings');
 
   useEffect(() => {
-    getDocument(trainingId);
-  }, [getDocument, trainingId]);
+    if (isFirstRun) {
+      setIsFirstRun(false);
+      getDocument(trainingId);
+    }
+  }, [trainingId, getDocument, isFirstRun]);
 
   // const { trainings, error } = useSelector(state => state.trainingsBase);
   // const { id } = useSelector(state => state.trainingForm);

@@ -93,8 +93,12 @@ const ExerciseForm = ({ exercisesCollection, id, index }) => {
   return (
     <div className={styles.exerciseForm}>
       <div className={styles.exerciseForm__title}>
-        <h3>Exercise {index + 1}</h3>
-        <FaTimes size='30px' onClick={handleRemoveExercise} />
+        <h2 className={styles.exerciseForm__title__name}>
+          Exercise {index + 1}
+        </h2>
+        <div className={styles.exerciseForm__title__icon}>
+          <FaTimes size='30px' onClick={handleRemoveExercise} />
+        </div>
       </div>
       <div className={styles.exerciseForm__muscle}>
         <div className={muscleClasses}>

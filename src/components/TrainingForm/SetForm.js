@@ -52,33 +52,38 @@ const SetForm = ({ parentId, id }) => {
     dispatch(trainingFormActions.removeSet({ parentId, id }));
   };
 
-  const weightClasses = isWeightNOK ? `${styles.error}` : '';
+  const weightClasses = isWeightNOK
+    ? `${styles.setForm__inputs__weight} ${styles.error}`
+    : styles.setForm__inputs__weight;
 
-  const repsClasses = isRepsNOK ? `${styles.error}` : '';
+  const repsClasses = isRepsNOK
+    ? `${styles.setForm__inputs__reps} ${styles.error}`
+    : styles.setForm__inputs__reps;
 
   return (
     <div className={styles.setForm}>
       <div className={styles.setForm__title}>
         <h3>Set {id + 1}</h3>
-        <FaTimes size="30px" onClick={handleRemoveSet} />
+        <FaTimes size='30px' onClick={handleRemoveSet} />
       </div>
       <div className={styles.setForm__inputs}>
         <div className={weightClasses}>
-          <label htmlFor="weight">Weight (kg)</label>
+          <label htmlFor='weight'>Weight (kg)</label>
           <input
-            type="number"
-            min="0"
-            name="weight"
+            type='number'
+            min='0'
+            step='0.05'
+            name='weight'
             value={selectedWeight ? selectedWeight : ''}
             onChange={e => setSelectedWeight(parseFloat(e.target.value))}
           />
         </div>
         <div className={repsClasses}>
-          <label htmlFor="reps">Repetitions</label>
+          <label htmlFor='reps'>Repetitions</label>
           <input
-            type="number"
-            min="1"
-            name="reps"
+            type='number'
+            min='1'
+            name='reps'
             value={selectedReps ? selectedReps : ''}
             onChange={e => setSelectedReps(parseFloat(e.target.value))}
           />
