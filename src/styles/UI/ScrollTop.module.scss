@@ -1,0 +1,23 @@
+@import '../variables';
+
+.scroll {
+  background-color: $blue1;
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+
+  display: grid;
+  place-items: center;
+
+  transition: transform 0.2s ease-in-out;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+}

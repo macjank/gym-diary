@@ -21,7 +21,7 @@ const Nav = ({ isSidebarOpen, onOpenSidebar, onCloseSidebar }) => {
           <h1>GymDiary</h1>
         </div>
       </Link>
-      {icon}
+      <div className={styles.nav__icons}>{icon}</div>
     </nav>
   );
 };

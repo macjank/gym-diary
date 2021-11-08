@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Modal from '../components/UI/Modal';
-import styles from '../styles/UI/ConfirmModal.module.scss';
+import styles from '../styles/UI/Modal.module.scss';
+import { FaQuestionCircle } from 'react-icons/fa';
 
 const useTwoActionsModal = ({
   question,
@@ -26,11 +27,24 @@ const useTwoActionsModal = ({
 
   const modal = (
     <Modal onClose={handleCloseModal}>
-      <div className={styles.modalContent}>
-        <h2 className={styles.modalContent__header}>{question}</h2>
-        <div className={styles.modalContent__buttons}>
-          <button onClick={handleCancel}>{cancelBtnText}</button>
-          <button onClick={handleConfirm}>{confirmBtnText}</button>
+      <div className={styles.modal__content}>
+        <div className={styles.modal__content__icon}>
+          <FaQuestionCircle size='50px' />
+        </div>
+        <h2 className={styles.modal__content__header}>{question}</h2>
+        <div className={styles.modal__content__buttons}>
+          <button
+            onClick={handleCancel}
+            className={styles.modal__content__buttons__cancelBtn}
+          >
+            {cancelBtnText}
+          </button>
+          <button
+            onClick={handleConfirm}
+            className={styles.modal__content__buttons__confirmBtn}
+          >
+            {confirmBtnText}
+          </button>
         </div>
       </div>
     </Modal>

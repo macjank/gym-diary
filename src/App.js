@@ -5,7 +5,6 @@ import NewTraining from './pages/NewTraining';
 import './styles/global.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import TrainingDetails from './components/Trainings/TrainingDetails';
 import Exercises from './pages/Exercises';
 import NotFound from './pages/NotFound';
 import Trainings from './pages/Trainings';
@@ -16,6 +15,7 @@ import { projectAuth } from './firebase/config';
 import { authActions } from './store/auth-slice';
 import LoadingSpinner from './components/UI/LoadingSpinner';
 import { trainingFormActions } from './store/trainingForm-slice';
+import TrainingDetails from './pages/TrainingDetails';
 
 function App() {
   const dispatch = useDispatch();
