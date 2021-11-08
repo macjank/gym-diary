@@ -18,11 +18,18 @@
       //color: $blue4;
     }
 
-    &__icon {
+    &__icons {
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
       //color: $blue4;
+
+      & > * {
+        margin-right: 30px;
+        cursor: pointer;
+
+        transition: transform 0.2s ease-in-out;
+      }
     }
   }
 

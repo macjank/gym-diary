@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import Modal from '../components/UI/Modal';
-import styles from '../styles/UI/InfoModal.module.scss';
+import styles from '../styles/UI/Modal.module.scss';
 import { FaExclamationCircle } from 'react-icons/fa';
 
 const useInfoModal = () => {
@@ -18,14 +18,19 @@ const useInfoModal = () => {
 
   const modal = (
     <Modal onClose={handleCloseModal}>
-      <div className={styles.modalContent}>
-        <div className={styles.modalContent__icon}>
+      <div className={styles.modal__content}>
+        <div className={styles.modal__content__icon}>
           <FaExclamationCircle size='60px' />
         </div>
 
-        <h3 className={styles.modalContent__text}>{modalMessage}</h3>
-        <div className={styles.modalContent__buttons}>
-          <button onClick={handleCloseModal}>Mkay...</button>
+        <h2 className={styles.modal__content__header}>{modalMessage}</h2>
+        <div className={styles.modal__content__buttons}>
+          <button
+            className={styles.modal__content__buttons__confirmBtn}
+            onClick={handleCloseModal}
+          >
+            Mkay...
+          </button>
         </div>
       </div>
     </Modal>

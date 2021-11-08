@@ -1,35 +1,62 @@
 @import '../variables';
 
 .exercise {
-  padding: 1rem 0;
+  padding: 20px 0;
   border-bottom: 1px solid $blue2;
+  text-align: center;
 
   &__name {
     text-transform: capitalize;
     text-align: center;
+    color: $blue4;
+    font-weight: 400;
   }
 
   &__muscle {
-    margin-top: 1rem;
-    font-weight: 300;
+    margin: 20px 0;
+    font-weight: 400;
     text-align: center;
   }
 
-  &__set {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
+  &__details {
+    display: inline-flex;
+    max-width: 100%;
+    margin: 0 auto;
 
-    &__legend > *, &__singleSet > * {
-      padding: 0.5em;
-      margin: 0.2em;
-      background-color: $blue1;
+    overflow-x: scroll;
+
+    &__legend > *,
+    &__set > * {
+      padding: 10px 15px;
+      margin: 1px;
       color: #fff;
     }
 
-    &__singleSet > * {
+    &__legend > * {
+      background-color: $grey1;
+      color: #000;
+    }
+
+    &__set > * {
+      background-color: $blue1;
       text-align: center;
+    }
+
+    &__set {
+      &__number {
+        background-color: $grey1;
+        color: #000;
+      }
+    }
+  }
+
+  &__summary {
+    margin: 40px auto 0 auto;
+    display: grid;
+    grid-template-columns: 50% 50%;
+
+    * {
+      color: $blue4;
     }
   }
 }

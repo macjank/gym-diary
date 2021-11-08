@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
-import styles from '../../styles/Trainings/TrainingDetails.module.scss';
-import LoadingSpinner from '../UI/LoadingSpinner';
-import Error from '../UI/Error';
-import ExerciseDetails from './ExerciseDetails';
+import LoadingSpinner from '../components/UI/LoadingSpinner';
+import Error from '../components/UI/Error';
+import ExerciseDetails from '../components/Trainings/ExerciseDetails';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
-import { trainingFormActions } from '../../store/trainingForm-slice';
-import useConfirmModal from '../../hooks/useConfirmModal';
-import useTwoActionsModal from '../../hooks/useTwoActionsModal';
-import useFirestore from '../../hooks/useFirestore';
+import { trainingFormActions } from '../store/trainingForm-slice';
+import useConfirmModal from '../hooks/useConfirmModal';
+import useTwoActionsModal from '../hooks/useTwoActionsModal';
+import useFirestore from '../hooks/useFirestore';
 import { useSelector } from 'react-redux';
+
+import styles from '../styles/pages/TrainingDetails.module.scss';
 
 const TrainingDetails = () => {
   const { trainingId } = useParams();
@@ -51,12 +52,11 @@ const TrainingDetails = () => {
     openModal: openEditionModal,
     isModalOpen: isEditionModalOpen,
   } = useTwoActionsModal({
-    question:
-      'There is already some unsaved data in the form. What you gonna do???',
+    question: 'There is some unsaved data in the form. What you gonna do???',
     onCancelAction: handleShowCurrentForm,
     onConfirmAction: handleEditTraining,
-    cancelBtnText: 'Show me this unsaved form',
-    confirmBtnText: 'Discard this data and let me edit this training',
+    cancelBtnText: 'Show me current form',
+    confirmBtnText: 'Clear the form & let me edit',
   });
 
   if (training.error) {
@@ -104,20 +104,22 @@ const TrainingDetails = () => {
       {isDeleteModalOpen && deleteModal}
       {isEditionModalOpen && editionModal}
       <main className={styles.training}>
-        <div className={styles.training__title}>
-          <h2>Training details</h2>
-          <div className={styles.training__title__icons}>
-            <FaEdit size='30px' onClick={handleTryToEdit} />
-            <FaTrashAlt size='30px' onClick={openDeleteModal} />
+        <div className={styles.training__header}>
+          <h2 className={styles.training__header__title}>Training details</h2>
+          <div className={styles.training__header__icons}>
+            <FaEdit size='35px' onClick={handleTryToEdit} />
+            <FaTrashAlt size='35px' onClick={openDeleteModal} />
           </div>
         </div>
-        <div className={styles.training__overalInfo}>
-          <h3>
-            Date: <span>{date}</span>
-          </h3>
-          <h3>
-            Location: <span>{location}</span>
-          </h3>
+        <div className={styles.training__overal}>
+          <div className={styles.training__overal__date}>
+            <h3>Date</h3>
+            <p>{date}</p>
+          </div>
+          <div className={styles.training__overal__location}>
+            <h3>Location</h3>
+            <p>{location}</p>
+          </div>
         </div>
         <div className={styles.training__details}>
           <h3 className={styles.training__details__title}>Exercises:</h3>

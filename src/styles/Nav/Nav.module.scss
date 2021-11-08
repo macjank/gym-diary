@@ -19,4 +19,10 @@
 
     font-size: 2.5em;
   }
+
+  &__icons {
+    * {
+      cursor: pointer;
+    }
+  }
 }

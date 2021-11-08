@@ -5,11 +5,13 @@ import styles from '../../styles/TrainingForm/ExerciseForm.module.scss';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { trainingFormActions } from '../../store/trainingForm-slice';
-import { FaTimes } from 'react-icons/fa';
+import { FaTimes, FaAngleDown } from 'react-icons/fa';
 
 const ExerciseForm = ({ exercisesCollection, id, index }) => {
   const { exercises, formError } = useSelector(state => state.trainingForm);
   const dispatch = useDispatch();
+
+  const [isExerciseFormVisible, setIsExerciseFormVisible] = useState(true);
 
   const currentExercise = exercises.find(exercise => exercise.id === id);
   const sets = currentExercise.sets;
@@ -82,6 +84,10 @@ const ExerciseForm = ({ exercisesCollection, id, index }) => {
     dispatch(trainingFormActions.removeExercise(id));
   };
 
+  const handleToggleExerciseVisible = () => {
+    setIsExerciseFormVisible(prevState => !prevState);
+  };
+
   const setsForms = sets.map((set, index) => (
     <SetForm key={index} parentId={id} id={index} />
   ));
@@ -96,58 +102,72 @@ const ExerciseForm = ({ exercisesCollection, id, index }) => {
         <h2 className={styles.exerciseForm__title__name}>
           Exercise {index + 1}
         </h2>
-        <div className={styles.exerciseForm__title__icon}>
+        <div className={styles.exerciseForm__title__icons}>
+          <FaAngleDown
+            size='40px'
+            onClick={handleToggleExerciseVisible}
+            style={
+              isExerciseFormVisible && {
+                transform: 'rotate(180deg)',
+              }
+            }
+          />
           <FaTimes size='30px' onClick={handleRemoveExercise} />
         </div>
       </div>
-      <div className={styles.exerciseForm__muscle}>
-        <div className={muscleClasses}>
-          <label htmlFor='muscle'>Muscle part:</label>
-          <select
-            name='muscle'
-            id='muscle'
-            value={selectedMusclePart}
-            onChange={handleChangeMusclePart}
-            required
-          >
-            <option value='---' disabled>
-              ---
-            </option>
-            {possibleMuscleParts.map((musclePart, index) => (
-              <option key={index} value={musclePart}>
-                {musclePart}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className={exerciseClasses}>
-          <label htmlFor='exerciseName'>Exercise name:</label>
-          <select
-            name='exerciseName'
-            id='exerciseName'
-            value={selectedExercise}
-            onChange={handleChangeExercise}
-            required
-          >
-            <option value='---' disabled>
-              ---
-            </option>
-            {possibleExercises.map((exercise, index) => (
-              <option key={index} value={exercise}>
-                {exercise}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
 
-      {setsForms}
+      {isExerciseFormVisible && (
+        <>
+          <div className={styles.exerciseForm__muscle}>
+            <div className={muscleClasses}>
+              <label htmlFor='muscle'>Muscle part:</label>
+              <select
+                name='muscle'
+                id='muscle'
+                value={selectedMusclePart}
+                onChange={handleChangeMusclePart}
+                required
+              >
+                <option value='---' disabled>
+                  ---
+                </option>
+                {possibleMuscleParts.map((musclePart, index) => (
+                  <option key={index} value={musclePart}>
+                    {musclePart}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className={exerciseClasses}>
+              <label htmlFor='exerciseName'>Exercise name:</label>
+              <select
+                name='exerciseName'
+                id='exerciseName'
+                value={selectedExercise}
+                onChange={handleChangeExercise}
+                required
+              >
+                <option value='---' disabled>
+                  ---
+                </option>
+                {possibleExercises.map((exercise, index) => (
+                  <option key={index} value={exercise}>
+                    {exercise}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
 
-      <div className={styles.btnContainer}>
-        <button type='button' onClick={handleAddNewSetForm}>
-          Add set
-        </button>
-      </div>
+          {setsForms}
+
+          <div className={styles.btnContainer}>
+            <button type='button' onClick={handleAddNewSetForm}>
+              Add set
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 };
