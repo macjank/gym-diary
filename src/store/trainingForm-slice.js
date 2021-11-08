@@ -25,6 +25,7 @@ const trainingFormSlice = createSlice({
     clearForm() {
       return initialState;
     },
+    
     changeDate(state, action) {
       state.date = action.payload;
     },
