@@ -27,10 +27,24 @@ const NewTraining = () => {
 
   const { addDocument, response } = useFirestore('trainings');
 
+  //saving the data in the local storage
+  useEffect(() => {
+    const trainingData = {
+      date,
+      location,
+      exercises,
+      isStarted,
+    };
+
+    localStorage.setItem('trainingForm', JSON.stringify(trainingData));
+  }, [date, location, exercises, isStarted]);
+
+  //clear the form and redirect if the form was submitted
   useEffect(() => {
     if (response.success) {
       dispatch(trainingFormActions.clearForm());
       history.push('/');
+      localStorage.removeItem('trainingForm');
     }
   }, [response.success, dispatch, history]);
 

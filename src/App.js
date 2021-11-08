@@ -15,10 +15,20 @@ import Login from './pages/Login';
 import { projectAuth } from './firebase/config';
 import { authActions } from './store/auth-slice';
 import LoadingSpinner from './components/UI/LoadingSpinner';
+import { trainingFormActions } from './store/trainingForm-slice';
 
 function App() {
   const dispatch = useDispatch();
   const { user, isAuthReady } = useSelector(state => state.auth);
+
+  //importing training form from local storage - if there is one
+  useEffect(() => {
+    const savedTrainingForm = localStorage.getItem('trainingForm');
+
+    if (savedTrainingForm) {
+      dispatch(trainingFormActions.replaceData(JSON.parse(savedTrainingForm)));
+    }
+  }, [dispatch]);
 
   //checking the authorization status after first run
   useEffect(() => {
