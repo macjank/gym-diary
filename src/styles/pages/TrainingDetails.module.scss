@@ -3,6 +3,7 @@
 .training {
   margin: 0 auto;
   padding: 0 1em;
+  max-width: $maxContentWidth;
 
   &__header {
     margin: 20px 0;

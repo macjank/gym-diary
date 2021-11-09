@@ -10,6 +10,12 @@ const initialState = {
     message: '',
   },
   isStarted: false,
+
+  //isEditing is used to check if user started editing some of the trainings.
+  //we use this property to redirect user from the adress 
+  //"/trainings/PmGwxQEYz4IJ0KzhMZk6/edit" when it was reached manually 
+  //and not by clicking edit icon
+  isEditing: false,
 };
 
 const trainingFormSlice = createSlice({
@@ -25,7 +31,7 @@ const trainingFormSlice = createSlice({
     clearForm() {
       return initialState;
     },
-    
+
     changeDate(state, action) {
       state.date = action.payload;
     },
@@ -91,12 +97,13 @@ const trainingFormSlice = createSlice({
       state.formError = action.payload;
     },
     replaceData(state, action) {
-      const { date, location, id, exercises } = action.payload;
+      const { date, location, id, exercises, isEditing } = action.payload;
 
       state.date = date;
       state.location = location;
       state.id = id;
       state.exercises = exercises;
+      state.isEditing = isEditing || false;
     },
   },
 });

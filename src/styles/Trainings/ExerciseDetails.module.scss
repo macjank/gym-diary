@@ -51,11 +51,12 @@
   }
 
   &__summary {
-    margin: 40px auto 0 auto;
-    display: grid;
-    grid-template-columns: 50% 50%;
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-evenly;
 
     * {
+      
       color: $blue4;
     }
   }
