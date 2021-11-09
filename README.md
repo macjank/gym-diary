@@ -1,5 +1,5 @@
-Gym Diary is alive - visit the link, sign up and check it out.
-https://friendly-golick-281f7b.netlify.app/
+# Gym Diary is alive - visit the link, sign up and check it out. 
+# https://friendly-golick-281f7b.netlify.app/
 
 # Getting Started with Create React App
 
