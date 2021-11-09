@@ -74,13 +74,13 @@ const TrainingDetails = () => {
   }
 
   function handleEditTraining() {
-    console.log('dupa');
     history.push(`/trainings/${trainingId}/edit`);
     dispatch(
       trainingFormActions.replaceData({
         date,
         location,
         exercises,
+        isEditing: true,
       })
     );
   }

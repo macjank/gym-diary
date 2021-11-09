@@ -42,7 +42,7 @@ const ExerciseDetails = ({ exerciseName, musclePart, sets }) => {
         </div>
         <div className={styles.exercise__summary__maxWeight}>
           <h4>Max weight</h4>
-          <p>{maxWeight}</p>
+          <p>{maxWeight} kg</p>
         </div>
       </div>
     </li>
