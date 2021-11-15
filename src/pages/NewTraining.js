@@ -3,13 +3,13 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import TrainingForm from '../components/TrainingForm/TrainingForm';
 import LoadingSpinner from '../components/UI/LoadingSpinner';
-import Error from '../components/UI/Error';
 import useCollection from '../hooks/useCollection';
 import { trainingFormActions } from '../store/trainingForm-slice';
 import styles from '../styles/pages/NewTraining.module.scss';
 import useFirestore from '../hooks/useFirestore';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
+import useInfoModal from '../hooks/useInfoModal';
 
 const NewTraining = () => {
   const dispatch = useDispatch();
@@ -27,6 +27,12 @@ const NewTraining = () => {
   ]);
 
   const { addDocument, response } = useFirestore('trainings');
+
+  const {
+    modal: errorModal,
+    onOpenModal: openErrorModal,
+    isModalOpen: isErrorModalOpen,
+  } = useInfoModal();
 
   //saving the data in the local storage
   useEffect(() => {
@@ -60,8 +66,21 @@ const NewTraining = () => {
     }
   }, [date, location, exercises, dispatch, isStarted]);
 
-  if (error) return <Error info={error} />;
-  if (response.error) return <Error info={response.error} />;
+  //showing the info modal when sending data to firebase has failed
+  useEffect(() => {
+    if (response.error) {
+      const errorInfo = response.error.message
+        ? response.error.message
+        : 'Sending data has failed';
+      openErrorModal(errorInfo);
+    }
+  }, [dispatch, response.error, openErrorModal]);
+
+  useEffect(() => {
+    if (error) {
+      openErrorModal(error);
+    }
+  }, [error, openErrorModal]);
 
   if (!exercisesCollection || response.isPending) {
     return <LoadingSpinner />;
@@ -112,7 +131,12 @@ const NewTraining = () => {
     );
   }
 
-  return <main className={styles.newTraining}>{content}</main>;
+  return (
+    <>
+      {isErrorModalOpen && errorModal}
+      <main className={styles.newTraining}>{content}</main>
+    </>
+  );
 };
 
 export default NewTraining;
