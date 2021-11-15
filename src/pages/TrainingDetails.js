@@ -14,9 +14,10 @@ import { useSelector } from 'react-redux';
 import styles from '../styles/pages/TrainingDetails.module.scss';
 
 const TrainingDetails = () => {
-  const { trainingId } = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
+
+  const { trainingId } = useParams();
   const { isStarted } = useSelector(state => state.trainingForm);
 
   //thanks to this I can avoid infinite loop caused by useEffect
@@ -35,9 +36,7 @@ const TrainingDetails = () => {
     }
   }, [trainingId, getDocument, isFirstRun]);
 
-  // const { trainings, error } = useSelector(state => state.trainingsBase);
-  // const { id } = useSelector(state => state.trainingForm);
-
+  //getting modal for deleting training
   const {
     modal: deleteModal,
     onOpenModal: openDeleteModal,
@@ -47,6 +46,7 @@ const TrainingDetails = () => {
     onConfirmAction: handleDeleteTraining,
   });
 
+  //getting modal for editing training
   const {
     modal: editionModal,
     openModal: openEditionModal,
@@ -87,7 +87,6 @@ const TrainingDetails = () => {
 
   function handleDeleteTraining() {
     deleteDocument(trainingId);
-    //dispatch(trainingsBaseActions.removeTraining(trainingId));
     history.replace('/');
   }
 

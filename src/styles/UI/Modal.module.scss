@@ -40,6 +40,10 @@
       justify-content: space-around;
       align-items: center;
 
+      button {
+        cursor: pointer;
+      }
+
       &__cancelBtn,
       &__confirmBtn {
         background-color: $blue2;

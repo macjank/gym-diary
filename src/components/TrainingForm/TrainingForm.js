@@ -5,20 +5,18 @@ import styles from '../../styles/TrainingForm/TrainingForm.module.scss';
 import ExerciseForm from './ExerciseForm';
 import { trainingFormActions } from '../../store/trainingForm-slice';
 import checkFormValidity from '../../helpers/checkFormValidity';
-import { useHistory } from 'react-router';
 import useConfirmModal from '../../hooks/useConfirmModal';
 import checkValidityName from '../../helpers/checkValidityName';
 import useInfoModal from '../../hooks/useInfoModal';
-import useFirestore from '../../hooks/useFirestore';
 
 const TrainingForm = ({ exercisesCollection, onSubmitToFirebase }) => {
-  const history = useHistory();
   const dispatch = useDispatch();
+  const { user } = useSelector(state => state.auth);
+
+  //all the data of the form is being constantly updated with the redux slice
   const { date, location, exercises, formError } = useSelector(
     state => state.trainingForm
   );
-  const { user } = useSelector(state => state.auth);
-  const { response } = useFirestore('trainings');
 
   //local state managing inputs
   const [selectedDate, setSelectedDate] = useState(date);
@@ -58,7 +56,7 @@ const TrainingForm = ({ exercisesCollection, onSubmitToFirebase }) => {
     dispatch(trainingFormActions.changeLocation(selectedLocation));
   }, [selectedDate, selectedLocation, dispatch]);
 
-  //we take 'isValidationError" from the context. once the 'isValidationError'
+  //we take 'formError" from the context. once the 'formError'
   //changes to true, we deal with our inputs as if they were touched
   useEffect(() => {
     if (formError.isError) {
@@ -73,25 +71,6 @@ const TrainingForm = ({ exercisesCollection, onSubmitToFirebase }) => {
       trainingFormActions.handleFormError({ isError: false, message: '' })
     );
   }, [date, location, exercises, dispatch]);
-
-  //we clear the form and take user to the home page
-  // - only if the data has been succesfully sent to firebase
-  useEffect(() => {
-    if (response.success) {
-      dispatch(trainingFormActions.clearForm());
-      history.push('/');
-    }
-  }, [dispatch, response.success, history]);
-
-  //showing the info modal when sending data to firebase has failed
-  useEffect(() => {
-    if (response.error) {
-      const errorInfo = response.error.message
-        ? response.error.message
-        : 'Sending data has failed';
-      openErrorModal(errorInfo);
-    }
-  }, [dispatch, response.error, openErrorModal]);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -111,22 +90,9 @@ const TrainingForm = ({ exercisesCollection, onSubmitToFirebase }) => {
     }
 
     onSubmitToFirebase({ date, location, exercises });
-
-    //addDocument(data);
   };
 
-  //updating local state for inputs (date and location)
-  const handleChangeDate = e => {
-    const date = e.target.value;
-    setSelectedDate(date);
-  };
-
-  const handleChangeLocation = e => {
-    const location = e.target.value;
-    setSelectedLocation(location);
-  };
-
-  //adding new form on button click
+  //on button click we add new exercise form
   const handleAddExerciseForm = () => {
     dispatch(trainingFormActions.addBlankExerciseForm());
   };
@@ -158,7 +124,7 @@ const TrainingForm = ({ exercisesCollection, onSubmitToFirebase }) => {
               type='date'
               id='date'
               value={selectedDate}
-              onChange={handleChangeDate}
+              onChange={e => setSelectedDate(e.target.value)}
             />
           </div>
           <div className={locationClasses}>
@@ -167,7 +133,7 @@ const TrainingForm = ({ exercisesCollection, onSubmitToFirebase }) => {
               type='text'
               id='location'
               value={selectedLocation}
-              onChange={handleChangeLocation}
+              onChange={e => setSelectedLocation(e.target.value)}
             />
           </div>
         </div>

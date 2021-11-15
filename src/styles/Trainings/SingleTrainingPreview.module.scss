@@ -1,8 +1,8 @@
 @import '../variables';
 
 .training {
-  padding: 3em;
-  cursor: pointer;
+  //padding: 3em;
+  //cursor: pointer;
   border-bottom: 1px solid $blue4;
   max-width: 400px;
   margin: auto;
@@ -10,11 +10,12 @@
 
   a {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
   }
 
   &__date,
   &__location {
+    padding: 2em 0;
     font-weight: 400;
     color: $blue4;
   }

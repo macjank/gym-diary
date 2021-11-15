@@ -2,6 +2,14 @@ import React from 'react';
 import styles from '../../styles/Trainings/ExerciseDetails.module.scss';
 
 const ExerciseDetails = ({ exerciseName, musclePart, sets }) => {
+  const totalWeight = sets.reduce((acc, curr) => {
+    const weightInSet = curr.weight * curr.reps;
+    return acc + weightInSet;
+  }, 0);
+
+  const allWeights = sets.map(set => set.weight);
+  const maxWeight = Math.max(...allWeights);
+
   const setsInfo = sets.map((set, index) => {
     const { reps, weight } = set;
 
@@ -13,15 +21,6 @@ const ExerciseDetails = ({ exerciseName, musclePart, sets }) => {
       </div>
     );
   });
-
-  const totalWeight = sets.reduce((acc, curr) => {
-    const weightInSet = curr.weight * curr.reps;
-    return acc + weightInSet;
-  }, 0);
-
-  const allWeights = sets.map(set => set.weight);
-  const maxWeight = Math.max(...allWeights);
-
 
   return (
     <li className={styles.exercise}>

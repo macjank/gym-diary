@@ -6,13 +6,14 @@ import styles from '../../styles/TrainingForm/SetForm.module.scss';
 import { FaTimes } from 'react-icons/fa';
 
 const SetForm = ({ parentId, id }) => {
-  const { exercises, formError } = useSelector(state => state.trainingForm);
   const dispatch = useDispatch();
+  const { exercises, formError } = useSelector(state => state.trainingForm);
 
   const currentSet = exercises.find(exercise => exercise.id === parentId).sets[
     id
   ];
 
+  //state for current inputs values
   const [selectedWeight, setSelectedWeight] = useState(currentSet.weight);
   const [selectedReps, setSelectedReps] = useState(currentSet.reps);
 
@@ -26,6 +27,8 @@ const SetForm = ({ parentId, id }) => {
   const isRepsNOK =
     isRepsTouched && (!selectedReps || selectedReps <= 0) && formError.isError;
 
+  //this useEffect triggers updates of the form context once the 
+  //input state changes
   useEffect(() => {
     if (!selectedWeight || !selectedReps) {
       return;
@@ -40,6 +43,7 @@ const SetForm = ({ parentId, id }) => {
     dispatch(trainingFormActions.editSet(data));
   }, [selectedWeight, selectedReps, dispatch, parentId, id]);
 
+    //if there is formError, we mark both muscle and exercise as touched
   useEffect(() => {
     if (formError.isError) {
       setIsWeightTouched(true);
@@ -48,7 +52,6 @@ const SetForm = ({ parentId, id }) => {
   }, [formError.isError]);
 
   const handleRemoveSet = () => {
-    //onRemoveSetForm({ parentId, id });
     dispatch(trainingFormActions.removeSet({ parentId, id }));
   };
 

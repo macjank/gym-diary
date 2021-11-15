@@ -8,10 +8,8 @@ import { trainingFormActions } from '../../store/trainingForm-slice';
 import { FaTimes, FaAngleDown } from 'react-icons/fa';
 
 const ExerciseForm = ({ exercisesCollection, id, index }) => {
-  const { exercises, formError } = useSelector(state => state.trainingForm);
   const dispatch = useDispatch();
-
-  const [isExerciseFormVisible, setIsExerciseFormVisible] = useState(true);
+  const { exercises, formError } = useSelector(state => state.trainingForm);
 
   const currentExercise = exercises.find(exercise => exercise.id === id);
   const sets = currentExercise.sets;
@@ -31,6 +29,9 @@ const ExerciseForm = ({ exercisesCollection, id, index }) => {
     selectedMusclePart === '---' && isMuscleTouched && formError.isError;
   const isExerciseNOK =
     selectedExercise === '---' && isExerciseTouched && formError.isError;
+
+  //we use this for collapsing the form of exercise
+  const [isExerciseFormVisible, setIsExerciseFormVisible] = useState(true);
 
   //these variables are here to dynamically change options in the input fields
   const possibleMuscleParts = exercisesCollection.map(item => item.muscleName);
@@ -61,20 +62,13 @@ const ExerciseForm = ({ exercisesCollection, id, index }) => {
     );
   }, [id, selectedMusclePart, selectedExercise, dispatch]);
 
+  //if there is formError, we mark both muscle and exercise as touched
   useEffect(() => {
     if (formError.isError) {
       setIsMuscleTouched(true);
       setIsExerciseTouched(true);
     }
   }, [formError.isError]);
-
-  const handleChangeMusclePart = e => {
-    setSelectedMusclePart(e.target.value);
-  };
-
-  const handleChangeExercise = e => {
-    setSelectedExercise(e.target.value);
-  };
 
   const handleAddNewSetForm = () => {
     dispatch(trainingFormActions.addBlankSetForm(id));
@@ -125,7 +119,7 @@ const ExerciseForm = ({ exercisesCollection, id, index }) => {
                 name='muscle'
                 id='muscle'
                 value={selectedMusclePart}
-                onChange={handleChangeMusclePart}
+                onChange={e => setSelectedMusclePart(e.target.value)}
                 required
               >
                 <option value='---' disabled>
@@ -144,7 +138,7 @@ const ExerciseForm = ({ exercisesCollection, id, index }) => {
                 name='exerciseName'
                 id='exerciseName'
                 value={selectedExercise}
-                onChange={handleChangeExercise}
+                onChange={e => setSelectedExercise(e.target.value)}
                 required
               >
                 <option value='---' disabled>

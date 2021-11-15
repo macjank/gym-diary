@@ -16,9 +16,12 @@ const EditTraining = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { isEditing } = useSelector(state => state.trainingForm);
+  const { isEditingExistingTraining } = useSelector(
+    state => state.trainingForm
+  );
   const { user } = useSelector(state => state.auth);
 
+  //we need this variable, bc after a succesful saving the form we need to redirect the user
   const [showPrompt, setShowPrompt] = useState(true);
 
   const { data: exercisesCollection, error } = useCollection('exercises', [
@@ -33,10 +36,10 @@ const EditTraining = () => {
   //if it's not true, it means the adress was entered manually and the user is
   //redirected to the training page
   useEffect(() => {
-    if (!isEditing) {
+    if (!isEditingExistingTraining) {
       history.replace(`/trainings/${trainingId}`);
     }
-  }, [isEditing, trainingId, history]);
+  }, [isEditingExistingTraining, trainingId, history]);
 
   //we clean the form after component gets unmounted
   //we force user to save changes before that by returning <Prompt /> with always when=true

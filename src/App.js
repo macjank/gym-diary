@@ -21,7 +21,7 @@ function App() {
   const dispatch = useDispatch();
   const { user, isAuthReady } = useSelector(state => state.auth);
 
-  //importing training form from local storage - if there is one
+  //importing training form from local storage as the app starts - if there is one
   useEffect(() => {
     const savedTrainingForm = localStorage.getItem('trainingForm');
 
@@ -64,19 +64,16 @@ function App() {
             <Route path='/trainings' exact>
               {user ? <Trainings /> : <Redirect to='/login' />}
             </Route>
-            <Route path='/new-training'>
+            <Route path='/new-training' exact> 
               {user ? <NewTraining /> : <Redirect to='/login' />}
             </Route>
-            {/* <Route path='/edit-training'>
-              {user ? <EditTraining /> : <Redirect to='/login' />}
-            </Route> */}
             <Route path='/trainings/:trainingId' exact>
               {user ? <TrainingDetails /> : <Redirect to='/login' />}
             </Route>
-            <Route path='/trainings/:trainingId/edit'>
+            <Route path='/trainings/:trainingId/edit' exact>
               {user ? <EditTraining /> : <Redirect to='/login' />}
             </Route>
-            <Route path='/exercises'>
+            <Route path='/exercises' exact>
               {user ? <Exercises /> : <Redirect to='/login' />}
             </Route>
             <Route path='*'>

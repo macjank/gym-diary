@@ -20,9 +20,14 @@
   top: 55%;
   left: 50%;
   transform: translate(-50%, -50%);
+  color: $blue4;
 
   &__header {
     font-weight: 300;
+
+    span {
+      font-weight: 600;
+    } 
   }
 
   &__exercisesBtn {
