@@ -7,6 +7,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import MaxWeightChart from '../components/Stats/MaxWeightChart';
 import useCollection from '../hooks/useCollection';
 
 const Stats = () => {
@@ -22,7 +23,7 @@ const Stats = () => {
   const [trainings, setTrainings] = useState([]);
 
   //we pick exercise names from the exercise collection and put it
-  //into local state
+  //into local state (exercises)
   useEffect(() => {
     if (!exercisesCollection) return;
 
@@ -35,11 +36,9 @@ const Stats = () => {
   }, [exercisesCollection]);
 
   //after selectedExercise changes, we filter trainings collection to find
-  //series with that exercise
+  //series with that exercise & we put that data into local state (trainings)
   useEffect(() => {
     if (!trainingsCollection) return;
-
-    console.log(trainingsCollection);
 
     const filteredTrainings = [];
 
@@ -75,6 +74,8 @@ const Stats = () => {
           <option key={index}>{exercise}</option>
         ))}
       </select>
+
+      <MaxWeightChart data={trainings} />
     </section>
   );
 };
