@@ -93,11 +93,19 @@ const useFirestore = collection => {
     }
   };
 
-  const overwriteDocument = async (id, newDoc) => {
+  const overwriteDocument = async (id, newDoc, createdAt) => {
     dispatch({ type: 'IS_PENDING' });
 
+    //there is a workaround with createdAt:
+    //if createdAt is passed as argument, we recreate "createdAt" in firestore
+    //with the same value as it was before overwrite
+    //if createdAt argument does not exist, we create new one
+    const miliseconds = createdAt
+      ? createdAt.seconds * 1000 + createdAt.nanoseconds / 1000000
+      : new Date();
+
     try {
-      const createdAt = timestamp.fromDate(new Date());
+      const createdAt = timestamp.fromMillis(miliseconds);
       await ref.doc(id).set({ ...newDoc, createdAt });
       dispatch({ type: 'OVERWRITTEN_DOCUMENT' });
     } catch (error) {

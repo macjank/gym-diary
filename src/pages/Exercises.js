@@ -11,11 +11,13 @@ const Exercises = () => {
   const { user } = useSelector(state => state.auth);
 
   //getting the exercises base from firebase
-  const { data: exercisesCollection, error } = useCollection('exercises', [
-    'uid',
-    '==',
-    user.uid,
-  ]);
+  const { data: exercisesCollection, error } = useCollection(
+    'exercises',
+    ['uid', '==', user.uid],
+    ['createdAt', 'asc']
+  );
+
+  //console.log(exercisesCollection);
 
   if (error) return <Error />;
   if (!exercisesCollection) return <LoadingSpinner />;

@@ -14,10 +14,12 @@ import useFirestore from '../../hooks/useFirestore';
 const TrainingForm = ({ exercisesCollection, onSubmitToFirebase }) => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const { user } = useSelector(state => state.auth);
+
+  //all the data of the form is being constantly updated with the redux slice
   const { date, location, exercises, formError } = useSelector(
     state => state.trainingForm
   );
-  const { user } = useSelector(state => state.auth);
   const { response } = useFirestore('trainings');
 
   //local state managing inputs

@@ -1,3 +1,7 @@
+//todo:
+//1. czy id jest potrzebne? CHYBA NIE JEST
+//2. czy formError jest potrzebny???
+
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -11,11 +15,11 @@ const initialState = {
   },
   isStarted: false,
 
-  //isEditing is used to check if user started editing some of the trainings.
-  //we use this property to redirect user from the adress 
-  //"/trainings/PmGwxQEYz4IJ0KzhMZk6/edit" when it was reached manually 
+  //isEditingExistingTraining is used to check if user started editing some of the existing trainings.
+  //we use this property to redirect user from the adress
+  //"/trainings/:id/edit" when it was reached manually -
   //and not by clicking edit icon
-  isEditing: false,
+  isEditingExistingTraining: false,
 };
 
 const trainingFormSlice = createSlice({
@@ -97,13 +101,19 @@ const trainingFormSlice = createSlice({
       state.formError = action.payload;
     },
     replaceData(state, action) {
-      const { date, location, id, exercises, isEditing } = action.payload;
+      const {
+        date,
+        location,
+        id,
+        exercises,
+        isEditing: isEditingExistingTraining,
+      } = action.payload;
 
       state.date = date;
       state.location = location;
       state.id = id;
       state.exercises = exercises;
-      state.isEditing = isEditing || false;
+      state.isEditingExistingTraining = isEditingExistingTraining || false;
     },
   },
 });

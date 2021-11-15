@@ -40,13 +40,12 @@ const NewExerciseForm = ({ exercisesCollection, muscleId }) => {
     }
 
     const newMuscleData = {
-      //createdAt: currentMuscle.createdAt,
       muscleName: currentMuscle.muscleName,
       muscleExercises: [...currentMuscle.muscleExercises, newExercise],
       uid: currentMuscle.uid,
     };
 
-    overwriteDocument(muscleId, newMuscleData);
+    overwriteDocument(muscleId, newMuscleData, currentMuscle.createdAt);
 
     newExerciseRef.current.value = '';
     setError({

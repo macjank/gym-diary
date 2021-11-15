@@ -18,6 +18,7 @@ const NewTraining = () => {
     state => state.trainingForm
   );
   const { user } = useSelector(state => state.auth);
+
   //getting the exercises base from firebase
   const { data: exercisesCollection, error } = useCollection('exercises', [
     'uid',
@@ -39,7 +40,8 @@ const NewTraining = () => {
     localStorage.setItem('trainingForm', JSON.stringify(trainingData));
   }, [date, location, exercises, isStarted]);
 
-  //clear the form and redirect if the form was submitted
+  //clear the form, clear the local storage
+  // and redirect if the form was submitted succesfully
   useEffect(() => {
     if (response.success) {
       dispatch(trainingFormActions.clearForm());
@@ -50,6 +52,7 @@ const NewTraining = () => {
 
   //we mark form as "isStarted" when some of the inputs are changed
   useEffect(() => {
+    //thanks to below line we avoid changing "isStarted" at the first render
     if (date === '' && location === '' && exercises.length === 0) return;
 
     if (!isStarted) {
@@ -57,12 +60,12 @@ const NewTraining = () => {
     }
   }, [date, location, exercises, dispatch, isStarted]);
 
-  if (error) return <Error />;
-  if (!exercisesCollection) {
+  if (error) return <Error info={error} />;
+  if (response.error) return <Error info={response.error} />;
+
+  if (!exercisesCollection || response.isPending) {
     return <LoadingSpinner />;
   }
-
-  const areThereAnyExercises = exercisesCollection.length !== 0;
 
   const handleSubmitToFirebase = ({ date, location, exercises }) => {
     const doc = {
@@ -77,12 +80,20 @@ const NewTraining = () => {
 
   let content;
 
+  const areThereAnyExercises =
+    exercisesCollection.length !== 0 &&
+    !exercisesCollection.every(
+      exercise => exercise.muscleExercises.length === 0
+    );
+
+  //if user doesn't have any exercises in the base we force him to add them first
   if (!areThereAnyExercises) {
     content = (
       <div className={styles.empty}>
         <h2 className={styles.empty__header}>
-          Your exercises collection is empty <br /> You have to manage it before
-          you add a new training
+          Your exercises collection is empty or incomplete. <br /> You won't be
+          able to add training without it, so
+          <span> please complete it first.</span>
         </h2>
         <Link to='exercises'>
           <button className={styles.empty__exercisesBtn}>Add exercises</button>
