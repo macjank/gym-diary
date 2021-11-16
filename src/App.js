@@ -16,6 +16,7 @@ import { authActions } from './store/auth-slice';
 import LoadingSpinner from './components/UI/LoadingSpinner';
 import { trainingFormActions } from './store/trainingForm-slice';
 import TrainingDetails from './pages/TrainingDetails';
+import Stats from './pages/Stats';
 
 function App() {
   const dispatch = useDispatch();
@@ -64,7 +65,7 @@ function App() {
             <Route path='/trainings' exact>
               {user ? <Trainings /> : <Redirect to='/login' />}
             </Route>
-            <Route path='/new-training' exact> 
+            <Route path='/new-training' exact>
               {user ? <NewTraining /> : <Redirect to='/login' />}
             </Route>
             <Route path='/trainings/:trainingId' exact>
@@ -75,6 +76,9 @@ function App() {
             </Route>
             <Route path='/exercises' exact>
               {user ? <Exercises /> : <Redirect to='/login' />}
+            </Route>
+            <Route path='/statistics' exact>
+              {user ? <Stats /> : <Redirect to='/login' />}
             </Route>
             <Route path='*'>
               {user ? <NotFound /> : <Redirect to='/login' />}

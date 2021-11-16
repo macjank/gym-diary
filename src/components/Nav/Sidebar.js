@@ -64,6 +64,11 @@ const Sidebar = ({ isOpen, onSelectLink }) => {
           Exercises
         </Link>
       </li>
+      <li>
+        <Link onClick={onSelectLink} to='/statistics'>
+          Statistics
+        </Link>
+      </li>
       <li onClick={handleLogout}>Logout</li>
     </ul>
   );
