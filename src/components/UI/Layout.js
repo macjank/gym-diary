@@ -16,9 +16,11 @@ const Layout = ({ children }) => {
 
   const handleOpenSidebar = () => {
     setIsSidebarOpen(true);
+    document.body.classList.add('no-scroll');
   };
   const handleCloseSidebar = () => {
     setIsSidebarOpen(false);
+    document.body.classList.remove('no-scroll');
   };
 
   return (

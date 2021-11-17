@@ -7,7 +7,6 @@
   width: 100%;
   background: $grey0;
   z-index: 999;
-
   overflow-y: scroll;
 
   transition: transform 0.2s ease-in-out;
@@ -27,6 +26,10 @@
 
     max-width: 400px;
     margin: auto;
+  }
+
+  &__logoutBtn {
+    cursor: pointer;
   }
 }
 

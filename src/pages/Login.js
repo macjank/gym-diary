@@ -26,37 +26,41 @@ const Login = () => {
   return (
     <>
       {isModalOpen && modal}
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <label htmlFor='email'>Email</label>
-        <input
-          type='email'
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-        />
-        <label htmlFor='password'>Password</label>
-        <input
-          type='password'
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-        />
-        {!isPending && (
-          <button className={styles.form__btnLogin}>Log in</button>
-        )}
 
-        {isPending && (
-          <button className={styles.form__btnLogin} disabled>
-            Loading...
-          </button>
-        )}
+      <section className={styles.wrapper}>
+        <h1 className={styles.header}>Log in to your account</h1>
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+          />
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+          />
+          {!isPending && (
+            <button className={styles.form__btnLogin}>Log in</button>
+          )}
 
-        <Link to='/signup'>
-          <button className={styles.form__btnSignup}>
-            No account yet?
-            <br />
-            Sign up!
-          </button>
-        </Link>
-      </form>
+          {isPending && (
+            <button className={styles.form__btnLogin} disabled>
+              Loading...
+            </button>
+          )}
+
+          <Link to="/signup">
+            <button className={styles.form__btnSignup}>
+              No account yet?
+              <br />
+              Sign up!
+            </button>
+          </Link>
+        </form>
+      </section>
     </>
   );
 };

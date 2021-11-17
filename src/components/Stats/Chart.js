@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   LineChart,
   Line,
@@ -7,19 +7,19 @@ import {
   YAxis,
   ResponsiveContainer,
   Tooltip,
-} from "recharts";
+} from 'recharts';
 
-import styles from "../../styles/Stats/Chart.module.scss";
+import styles from '../../styles/Stats/Chart.module.scss';
 
 const Chart = ({ trainings, chartType }) => {
   const dataToShow = [];
   let header;
 
-  if (chartType === "maxWeights") {
-    header = "Maximum weight";
+  if (chartType === 'maxWeights') {
+    header = 'Maximum weight of 1 repetition';
 
-    trainings.forEach((training) => {
-      const allWeights = training.trainingData.sets.map((item) => item.weight);
+    trainings.forEach(training => {
+      const allWeights = training.trainingData.sets.map(item => item.weight);
       const maxWeight = Math.max(...allWeights);
 
       dataToShow.push({
@@ -29,10 +29,10 @@ const Chart = ({ trainings, chartType }) => {
     });
   }
 
-  if (chartType === "totalWeights") {
-    header = "Total weight";
+  if (chartType === 'totalWeights') {
+    header = 'Max total weight on 1 training';
 
-    trainings.forEach((training) => {
+    trainings.forEach(training => {
       const totalTrainingWeight = training.trainingData.sets.reduce(
         (acc, curr) => {
           return acc + curr.reps * curr.weight;
@@ -47,7 +47,7 @@ const Chart = ({ trainings, chartType }) => {
     });
   }
 
-  const ath = Math.max(...dataToShow.map((item) => item.weight));
+  const ath = Math.max(...dataToShow.map(item => item.weight));
 
   return (
     <>
@@ -70,16 +70,14 @@ const Chart = ({ trainings, chartType }) => {
                 <Line type="monotone" dataKey="weight" />
                 <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
                 <XAxis dataKey="name" />
-                <YAxis domain={["dataMin - 5", "dataMax"]} />
+                <YAxis domain={['dataMin - 5', 'dataMax']} />
                 <Tooltip />
               </LineChart>
             </ResponsiveContainer>
           </div>
           <div className={styles.summary}>
-            <h4
-              className={styles.summary__header}
-            >{`All time high (${header}):`}</h4>
-            <h4 className={styles.summary__result}>{ath} kg</h4>
+            <h4 className={styles.summary__header}>All time high</h4>
+            <h3 className={styles.summary__result}>{ath} kg</h3>
           </div>
         </div>
       )}

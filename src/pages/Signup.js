@@ -26,36 +26,39 @@ const Signup = () => {
   return (
     <>
       {isModalOpen && modal}
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <label htmlFor='email'>Email</label>
-        <input
-          type='email'
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-        />
-        <label htmlFor='password'>Password</label>
-        <input
-          type='password'
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-        />
-        <label htmlFor='name'>Name</label>
-        <input
-          type='text'
-          value={name}
-          onChange={e => setName(e.target.value)}
-        />
+      <section className={styles.wrapper}>
+        <h1 className={styles.header}>Create new account</h1>
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+          />
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+          />
+          <label htmlFor="name">Name</label>
+          <input
+            type="text"
+            value={name}
+            onChange={e => setName(e.target.value)}
+          />
 
-        {!isPending && (
-          <button className={styles.form__btnSignup}>Sign up</button>
-        )}
+          {!isPending && (
+            <button className={styles.form__btnSignup}>Sign up</button>
+          )}
 
-        {isPending && (
-          <button className={styles.form__btnSignup} disabled>
-            Loading...
-          </button>
-        )}
-      </form>
+          {isPending && (
+            <button className={styles.form__btnSignup} disabled>
+              Loading...
+            </button>
+          )}
+        </form>
+      </section>
     </>
   );
 };
