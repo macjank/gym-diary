@@ -81,9 +81,9 @@ const Stats = () => {
 
   return (
     <section className={styles.stats}>
-      <h3 className={styles.stats__header}>
-        Pick the exercise and chart type to see the statistics
-      </h3>
+      <h2 className={styles.stats__header}>
+        Pick the exercise and chart type to see some stats
+      </h2>
 
       <div className={styles.stats__form}>
         <div className={styles.stats__form__exercise}>

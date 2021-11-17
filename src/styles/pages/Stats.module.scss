@@ -1,6 +1,11 @@
-@import "../variables";
+@import '../variables';
 
 .stats {
+  padding: 1em;
+  text-align: center;
+  max-width: $maxContentWidth;
+  margin: auto;
+
   &__header {
     color: $blue2;
     margin: 20px 10px;
@@ -8,7 +13,8 @@
     font-weight: 400;
   }
   &__form {
-    max-width: 300px;
+    padding: 1em;
+
     margin: auto;
     padding: 5px 10px;
 
@@ -21,6 +27,7 @@
 
     select {
       margin-top: 10px;
+      padding: 1em;
     }
   }
 }

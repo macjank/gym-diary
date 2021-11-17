@@ -8,8 +8,10 @@ body {
   padding: 0;
   background: $background1;
   font-family: $primaryFont;
+}
 
-
+body.no-scroll {
+  overflow: hidden;
 }
 
 *,

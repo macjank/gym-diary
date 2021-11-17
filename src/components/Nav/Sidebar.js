@@ -24,12 +24,12 @@ const Sidebar = ({ isOpen, onSelectLink }) => {
     return (
       <ul className={sidebarClasses}>
         <li>
-          <Link onClick={onSelectLink} to='/login'>
+          <Link onClick={onSelectLink} to="/login">
             Login
           </Link>
         </li>
         <li>
-          <Link onClick={onSelectLink} to='/signup'>
+          <Link onClick={onSelectLink} to="/signup">
             Signup
           </Link>
         </li>
@@ -44,32 +44,24 @@ const Sidebar = ({ isOpen, onSelectLink }) => {
           You are logged in as {user.displayName}
         </div>
       )}
-      <li>
-        <Link onClick={onSelectLink} to='/'>
-          Home
-        </Link>
+      <Link onClick={onSelectLink} to="/">
+        <li>Home</li>
+      </Link>
+      <Link onClick={onSelectLink} to="/trainings">
+        <li>All trainings</li>
+      </Link>
+      <Link onClick={onSelectLink} to="/new-training">
+        <li>Add new training</li>
+      </Link>
+      <Link onClick={onSelectLink} to="/exercises">
+        <li>Exercises</li>
+      </Link>
+      <Link onClick={onSelectLink} to="/statistics">
+        <li>Statistics</li>
+      </Link>
+      <li onClick={handleLogout} className={styles.sidebar__logoutBtn}>
+        Logout
       </li>
-      <li>
-        <Link onClick={onSelectLink} to='/trainings'>
-          All trainings
-        </Link>
-      </li>
-      <li>
-        <Link onClick={onSelectLink} to='/new-training'>
-          Add new training
-        </Link>
-      </li>
-      <li>
-        <Link onClick={onSelectLink} to='/exercises'>
-          Exercises
-        </Link>
-      </li>
-      <li>
-        <Link onClick={onSelectLink} to='/statistics'>
-          Statistics
-        </Link>
-      </li>
-      <li onClick={handleLogout}>Logout</li>
     </ul>
   );
 };
